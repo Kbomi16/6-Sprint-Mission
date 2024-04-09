@@ -1,10 +1,11 @@
-const emailValidation = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const passwordValidation = /^.{8,}$/;
+import { EMAIL_REGEX, EIGHT_NUMBERS_REGEX } from "./regex.js";
 
 const visibilityOffIcon = document.querySelector(
   ".password-visibility-off-icon"
 );
-const passwordConfirmVisibilityIcon = document.querySelector('.password-confirm-visibility-off-icon')
+const passwordConfirmVisibilityIcon = document.querySelector(
+  ".password-confirm-visibility-off-icon"
+);
 
 const emailInput = document.getElementById("email");
 const nicknameInput = document.getElementById("nickname");
@@ -20,8 +21,8 @@ const updateLoginButtonState = () => {
     nicknameInput.value &&
     passwordInput.value &&
     passwordConfirm.value &&
-    emailValidation.test(emailInput.value.trim()) &&
-    passwordValidation.test(passwordInput.value.trim()) &&
+    EMAIL_REGEX.test(emailInput.value.trim()) &&
+    EIGHT_NUMBERS_REGEX.test(passwordInput.value.trim()) &&
     passwordInput.value === passwordConfirm.value
   ) {
     loginBtn.disabled = false;
@@ -57,7 +58,10 @@ const toggleVisibilityIconConfirm = () => {
 };
 
 visibilityOffIcon.addEventListener("click", toggleVisibilityIcon);
-passwordConfirmVisibilityIcon.addEventListener("click", toggleVisibilityIconConfirm)
+passwordConfirmVisibilityIcon.addEventListener(
+  "click",
+  toggleVisibilityIconConfirm
+);
 
 emailInput.addEventListener("focusout", () => {
   const fieldWrapper = emailInput.parentNode;
@@ -71,7 +75,7 @@ emailInput.addEventListener("focusout", () => {
       p.textContent = "이메일을 입력해주세요.";
       fieldWrapper.append(p);
     }
-  } else if (emailValidation.test(emailInput.value.trim())) {
+  } else if (EMAIL_REGEX.test(emailInput.value.trim())) {
     emailInput.classList.remove("error");
     if (errorMessage) {
       errorMessage.remove();
@@ -121,7 +125,7 @@ passwordInput.addEventListener("focusout", () => {
       p.textContent = "비밀번호를 입력해주세요.";
       fieldWrapper.append(p);
     }
-  } else if (passwordValidation.test(passwordInput.value.trim())) {
+  } else if (EIGHT_NUMBERS_REGEX.test(passwordInput.value.trim())) {
     passwordInput.classList.remove("error");
     if (errorMessage) {
       errorMessage.remove();
