@@ -62,19 +62,27 @@ passwordConfirmVisibilityIcon.addEventListener(
   toggleVisibilityIconConfirm
 );
 
+const createErrorMessage = (message) => {
+  const p = document.createElement("p");
+  p.classList.add("errorMessage");
+  p.textContent = message;
+  return p;
+};
+
 emailInput.addEventListener("focusout", () => {
   const fieldWrapper = emailInput.parentNode;
   const errorMessage = fieldWrapper.querySelector(".errorMessage");
+  const emailInputValue = emailInput.value.trim();
 
-  if (emailInput.value === "") {
-    if (!fieldWrapper.querySelector(".errorMessage")) {
+  if (emailInputValue === "") {
+    if (!errorMessage) {
       emailInput.classList.add("error");
-      const p = document.createElement("p");
-      p.classList.add("errorMessage");
-      p.textContent = "이메일을 입력해주세요.";
+      const p = createErrorMessage("이메일을 입력해주세요.");
       fieldWrapper.append(p);
     }
-  } else if (EMAIL_REGEX.test(emailInput.value.trim())) {
+    return; // 이메일 입력값이 비어있는 경우 조기 반환
+  }
+  if (EMAIL_REGEX.test(emailInputValue)) {
     emailInput.classList.remove("error");
     if (errorMessage) {
       errorMessage.remove();
@@ -85,9 +93,7 @@ emailInput.addEventListener("focusout", () => {
       errorMessage.remove();
     }
     emailInput.classList.add("error");
-    const p = document.createElement("p");
-    p.classList.add("errorMessage");
-    p.textContent = "잘못된 이메일 형식입니다.";
+    const p = createErrorMessage("잘못된 이메일 형식입니다.");
     fieldWrapper.append(p);
   }
 });
@@ -97,34 +103,34 @@ nicknameInput.addEventListener("focusout", () => {
   const errorMessage = fieldWrapper.querySelector(".errorMessage");
 
   if (nicknameInput.value === "") {
-    if (!fieldWrapper.querySelector(".errorMessage")) {
+    if (!errorMessage) {
       nicknameInput.classList.add("error");
-      const p = document.createElement("p");
-      p.classList.add("errorMessage");
-      p.textContent = "닉네임을 입력해주세요.";
+      const p = createErrorMessage("닉네임을 입력해주세요.");
       fieldWrapper.append(p);
     }
-  } else {
-    if (errorMessage) {
-      errorMessage.remove();
-    }
-    nicknameInput.style.border = "2px solid var(--main)";
+    return; 
   }
+
+  if (errorMessage) {
+    errorMessage.remove();
+  }
+  nicknameInput.style.border = "2px solid var(--main)";
 });
+
 
 passwordInput.addEventListener("focusout", () => {
   const fieldWrapper = passwordInput.parentNode;
   const errorMessage = fieldWrapper.querySelector(".errorMessage");
+  const passwordInputValue = passwordInput.value.trim();
 
-  if (passwordInput.value === "") {
-    if (!fieldWrapper.querySelector(".errorMessage")) {
-      passwordInput.classList.add("error");
-      const p = document.createElement("p");
-      p.classList.add("errorMessage");
-      p.textContent = "비밀번호를 입력해주세요.";
-      fieldWrapper.append(p);
-    }
-  } else if (EIGHT_NUMBERS_REGEX.test(passwordInput.value.trim())) {
+  if (passwordInputValue === "") {
+    passwordInput.classList.add("error");
+    const p = createErrorMessage("비밀번호를 입력해주세요.");
+    fieldWrapper.append(p);
+    return; // 비밀번호가 비어있는 경우 조기 반환
+  }
+
+  if (EIGHT_NUMBERS_REGEX.test(passwordInputValue)) {
     passwordInput.classList.remove("error");
     if (errorMessage) {
       errorMessage.remove();
@@ -135,26 +141,26 @@ passwordInput.addEventListener("focusout", () => {
       errorMessage.remove();
     }
     passwordInput.classList.add("error");
-    const p = document.createElement("p");
-    p.classList.add("errorMessage");
-    p.textContent = "비밀번호를 8자 이상 입력해주세요.";
+    const p = createErrorMessage("비밀번호를 8자 이상 입력해주세요.");
     fieldWrapper.append(p);
   }
 });
 
+
 passwordConfirm.addEventListener("focusout", () => {
   const fieldWrapper = passwordConfirm.parentNode;
   const errorMessage = fieldWrapper.querySelector(".errorMessage");
+  const passwordConfirmValue = passwordConfirm.value.trim()
 
-  if (passwordConfirm.value === "") {
-    if (!fieldWrapper.querySelector(".errorMessage")) {
+  if (passwordConfirmValue === "") {
+    if (!errorMessage) {
       passwordConfirm.classList.add("error");
-      const p = document.createElement("p");
-      p.classList.add("errorMessage");
-      p.textContent = "비밀번호를 다시 한 번 입력해주세요.";
+      const p = createErrorMessage("비밀번호를 다시 한 번 입력해주세요.");
       fieldWrapper.append(p);
     }
-  } else if (passwordInput.value === passwordConfirm.value) {
+    return
+  } 
+  if (passwordInput.value === passwordConfirm.value) {
     passwordConfirm.classList.remove("error");
     if (errorMessage) {
       errorMessage.remove();
@@ -165,9 +171,7 @@ passwordConfirm.addEventListener("focusout", () => {
       errorMessage.remove();
     }
     passwordConfirm.classList.add("error");
-    const p = document.createElement("p");
-    p.classList.add("errorMessage");
-    p.textContent = "비밀번호가 일치하지 않습니다.";
+    const p = createErrorMessage("비밀번호가 일치하지 않습니다.");
     fieldWrapper.append(p);
   }
 });

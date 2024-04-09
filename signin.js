@@ -48,7 +48,7 @@ const createErrorMessage = (message) => {
 emailInput.addEventListener("focusout", () => {
   const fieldWrapper = emailInput.parentNode;
   const errorMessage = fieldWrapper.querySelector(".errorMessage");
-  const emailInputValue = emailInput.value.trim()
+  const emailInputValue = emailInput.value.trim();
 
   if (emailInputValue === "") {
     if (!errorMessage) {
@@ -56,8 +56,8 @@ emailInput.addEventListener("focusout", () => {
       const p = createErrorMessage("이메일을 입력해주세요.");
       fieldWrapper.append(p);
     }
-    return // 이메일 입력값이 비어있는 경우 조기 반환
-  } 
+    return; // 이메일 입력값이 비어있는 경우 조기 반환
+  }
   if (EMAIL_REGEX.test(emailInputValue)) {
     emailInput.classList.remove("error");
     if (errorMessage) {
@@ -77,16 +77,16 @@ emailInput.addEventListener("focusout", () => {
 passwordInput.addEventListener("focusout", () => {
   const fieldWrapper = passwordInput.parentNode;
   const errorMessage = fieldWrapper.querySelector(".errorMessage");
+  const passwordInputValue = passwordInput.value.trim();
 
-  if (passwordInput.value === "") {
-    if (!fieldWrapper.querySelector(".errorMessage")) {
-      passwordInput.classList.add("error");
-      const p = document.createElement("p");
-      p.classList.add("errorMessage");
-      p.textContent = "비밀번호를 입력해주세요.";
-      fieldWrapper.append(p);
-    }
-  } else if (EIGHT_NUMBERS_REGEX.test(passwordInput.value.trim())) {
+  if (passwordInputValue === "") {
+    passwordInput.classList.add("error");
+    const p = createErrorMessage("비밀번호를 입력해주세요.");
+    fieldWrapper.append(p);
+    return; // 비밀번호가 비어있는 경우 조기 반환
+  }
+
+  if (EIGHT_NUMBERS_REGEX.test(passwordInputValue)) {
     passwordInput.classList.remove("error");
     if (errorMessage) {
       errorMessage.remove();
@@ -97,9 +97,7 @@ passwordInput.addEventListener("focusout", () => {
       errorMessage.remove();
     }
     passwordInput.classList.add("error");
-    const p = document.createElement("p");
-    p.classList.add("errorMessage");
-    p.textContent = "비밀번호를 8자 이상 입력해주세요.";
+    const p = createErrorMessage("비밀번호를 8자 이상 입력해주세요.");
     fieldWrapper.append(p);
   }
 });
