@@ -8,7 +8,6 @@ const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 
 const loginBtn = document.querySelector("button.login");
-loginBtn.disabled = true;
 
 const updateLoginButtonState = () => {
   if (

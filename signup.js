@@ -13,7 +13,6 @@ const passwordInput = document.getElementById("password");
 const passwordConfirm = document.getElementById("confirm_password");
 
 const loginBtn = document.querySelector("button.login");
-loginBtn.disabled = true;
 
 const updateLoginButtonState = () => {
   if (
