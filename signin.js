@@ -39,19 +39,27 @@ const toggleVisibilityIcon = () => {
 
 visibilityOffIcon.addEventListener("click", toggleVisibilityIcon);
 
+const createErrorMessage = (message) => {
+  const p = document.createElement("p");
+  p.classList.add("errorMessage");
+  p.textContent = message;
+  return p;
+};
+
 emailInput.addEventListener("focusout", () => {
   const fieldWrapper = emailInput.parentNode;
   const errorMessage = fieldWrapper.querySelector(".errorMessage");
+  const emailInputValue = emailInput.value.trim()
 
-  if (emailInput.value === "") {
-    if (!fieldWrapper.querySelector(".errorMessage")) {
+  if (emailInputValue === "") {
+    if (!errorMessage) {
       emailInput.classList.add("error");
-      const p = document.createElement("p");
-      p.classList.add("errorMessage");
-      p.textContent = "이메일을 입력해주세요.";
+      const p = createErrorMessage("이메일을 입력해주세요.");
       fieldWrapper.append(p);
     }
-  } else if (EMAIL_REGEX.test(emailInput.value.trim())) {
+    return // 이메일 입력값이 비어있는 경우 조기 반환
+  } 
+  if (EMAIL_REGEX.test(emailInputValue)) {
     emailInput.classList.remove("error");
     if (errorMessage) {
       errorMessage.remove();
@@ -62,9 +70,7 @@ emailInput.addEventListener("focusout", () => {
       errorMessage.remove();
     }
     emailInput.classList.add("error");
-    const p = document.createElement("p");
-    p.classList.add("errorMessage");
-    p.textContent = "잘못된 이메일 형식입니다.";
+    const p = createErrorMessage("잘못된 이메일 형식입니다.");
     fieldWrapper.append(p);
   }
 });
