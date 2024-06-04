@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* 공통 CSS */
 /* 색상 css 변수 */
 :root {
