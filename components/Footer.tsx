@@ -1,20 +1,20 @@
-import React from 'react'
-import icon_facebook from '@/public/assets/icon_facebook.png'
-import icon_twitter from '@/public/assets/icon_twitter.png'
-import icon_youtube from '@/public/assets/icon_youtube.png'
-import icon_insta from '@/public/assets/icon_insta.png'
-import Link from 'next/link'
-import Image from 'next/image'
+import React from "react";
+import icon_facebook from "@/public/assets/icon_facebook.png";
+import icon_twitter from "@/public/assets/icon_twitter.png";
+import icon_youtube from "@/public/assets/icon_youtube.png";
+import icon_insta from "@/public/assets/icon_insta.png";
+import Link from "next/link";
+import Image from "next/image";
 
 function Footer() {
   return (
-    <footer className="bg-gray-800 text-white py-6 w-full h-[160px] relative b-[0]">
-      <div className="container mx-auto flex flex-col-reverse md:flex-row justify-between items-center">
-        <p className="text-sm relative -left-[10rem] top-[1rem] md:text-base mb-4 md:mb-0 md:left-0 md:top-0">
+    <footer className="b-[0] relative h-[160px] w-full bg-gray-800 py-6 text-white">
+      <div className="container mx-auto flex flex-col-reverse items-center justify-between md:flex-row">
+        <p className="relative -left-[10rem] top-[1rem] mb-4 text-sm md:left-0 md:top-0 md:mb-0 md:text-base">
           ©codeit - 2024
         </p>
         <div className="flex flex-row items-center md:justify-between md:gap-[20rem]">
-          <div className="text-white flex space-x-4 mb-4 md:mb-0 relative -left-[5rem] top-2 items-center md:top-0 md:-left-0">
+          <div className="relative -left-[5rem] top-2 mb-4 flex items-center space-x-4 text-white md:-left-0 md:top-0 md:mb-0">
             <p className="text-sm md:text-base">
               <Link href="./privacy.html">Privacy Policy</Link>
             </p>
@@ -28,7 +28,7 @@ function Footer() {
               target="_blank"
               rel="noreferrer"
             >
-              <div className="w-5 h-5">
+              <div className="h-5 w-5">
                 <Image
                   src={icon_facebook}
                   alt="facebook"
@@ -38,7 +38,7 @@ function Footer() {
               </div>
             </Link>
             <Link href="https://twitter.com/" target="_blank" rel="noreferrer">
-              <div className="w-5 h-5">
+              <div className="h-5 w-5">
                 <Image
                   src={icon_twitter}
                   alt="twitter"
@@ -52,7 +52,7 @@ function Footer() {
               target="_blank"
               rel="noreferrer"
             >
-              <div className="w-5 h-5">
+              <div className="h-5 w-5">
                 <Image
                   src={icon_youtube}
                   alt="youtube"
@@ -66,7 +66,7 @@ function Footer() {
               target="_blank"
               rel="noreferrer"
             >
-              <div className="w-5 h-5">
+              <div className="h-5 w-5">
                 <Image
                   src={icon_insta}
                   alt="instagram"
@@ -79,7 +79,7 @@ function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

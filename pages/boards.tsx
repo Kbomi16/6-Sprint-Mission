@@ -1,21 +1,21 @@
-import React from 'react'
-import BestPosts from '@/components/BestPosts'
-import Posts from '@/components/Posts'
+import React from "react";
+import BestPosts from "@/components/BestPosts";
+import Posts from "@/components/Posts";
 
 export default function boards() {
   return (
-    <div className="w-full m-[8rem_auto_2rem] px-4 max-w-[1200px] md:m-[0] md:p-[8rem_5rem_5rem] lg:m-[0_auto_5rem]">
-      <h3 className="font-bold text-[20px] mb-4">베스트 게시글</h3>
-      <div className="flex justify-center mb-[3rem] w-full">
+    <div className="m-[8rem_auto_2rem] w-full max-w-[1200px] px-4 md:m-[0] md:p-[8rem_5rem_5rem] lg:m-[0_auto_5rem]">
+      <h3 className="mb-4 text-[20px] font-bold">베스트 게시글</h3>
+      <div className="mb-[3rem] flex w-full justify-center">
         <BestPosts initialBestPosts={[]} />
       </div>
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-bold text-[20px] mb-4">게시글</h3>
-        <button className="bg-[--btn1] text-white border-none cursor-pointer inline-flex items-center justify-center h-[42px] rounded-[0.5rem] px-[1rem] py-[0.5rem] hover:bg-[--btn2]">
+      <div className="mb-4 flex items-center justify-between">
+        <h3 className="mb-4 text-[20px] font-bold">게시글</h3>
+        <button className="inline-flex h-[42px] cursor-pointer items-center justify-center rounded-[0.5rem] border-none bg-[--btn1] px-[1rem] py-[0.5rem] text-white hover:bg-[--btn2]">
           글쓰기
         </button>
       </div>
       <Posts initialPosts={[]} />
     </div>
-  )
+  );
 }
