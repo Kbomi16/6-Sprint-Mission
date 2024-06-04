@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import icon_medal from '@/public/assets/icon_medal.png'
 import icon_favorite from '@/public/assets/icon_favorite.png'
 import Image from 'next/image'
-import styles from '@/styles/posts.module.css'
 import formatDate from '@/utils/formatDate'
 
 type BestPostsData = {
@@ -82,8 +81,8 @@ export default function BestPosts({ initialBestPosts }: BestPostsProps) {
       const screenSize = mqlDesktop.matches
         ? 'desktop'
         : mqlTablet.matches
-        ? 'tablet'
-        : 'mobile'
+          ? 'tablet'
+          : 'mobile'
       const bestPostsPerPage = getBestPostsPerPage(screenSize)
       setPageSize(bestPostsPerPage)
 
@@ -113,19 +112,22 @@ export default function BestPosts({ initialBestPosts }: BestPostsProps) {
   }, [])
 
   return (
-    <div className={styles.container}>
+    <div className="flex items-center justify-start lg:mx-auto gap-6">
       {bestPosts &&
         bestPosts.map((post) => (
-          <div className={styles.bestPostBox} key={post.id}>
+          <div
+            className="w-[400px] h-[169px] bg-[var(--gray50)] rounded-[1rem] px-8 lg:w-full"
+            key={post.id}
+          >
             <div>
-              <div className={styles.medal}>
+              <div className="inline-flex justify-center items-center bg-[var(--main)] h-[30px] w-[102px] rounded-b-[5rem]">
                 <Image src={icon_medal} alt="메달" width={16} height={16} />
-                <p>Best</p>
+                <p className="text-white text-[16px]">Best</p>
               </div>
-              <div className={styles.titleImage}>
-                <h3 className={styles.titleP}>{post.title}</h3>
+              <div className="flex justify-between items-center h-[80px] gap-[0.3rem]">
+                <h3 className="m-0 p-0 font-bold">{post.title}</h3>
                 {post.image && (
-                  <div className={styles.postImg}>
+                  <div className="min-w-[72px] h-[72px] border-[1.5px] border-[var(--gray100)] bg-white flex items-center justify-center rounded-[0.3rem]">
                     <Image
                       src={post.image}
                       alt="포스트 이미지"
@@ -135,18 +137,24 @@ export default function BestPosts({ initialBestPosts }: BestPostsProps) {
                   </div>
                 )}
               </div>
-              <div className={styles.bestPostFooter}>
-                <div className={styles.writerContent}>
-                  <p className={styles.writer}>{post.writer.nickname}</p>
+              <div className="flex justify-between items-end mt-4">
+                <div className="flex items-center justify-start gap-[0.2rem]">
+                  <p className="text-[14px] text-[var(--gray600)]">
+                    {post.writer.nickname}
+                  </p>
                   <Image
                     src={icon_favorite}
                     alt="하트"
                     width={16}
                     height={16}
                   />
-                  <p className={styles.writer}>{post.likeCount}</p>
+                  <p className="text-[14px] text-[var(--gray600)]">
+                    {post.likeCount}
+                  </p>
                 </div>
-                <p className={styles.date}>{formatDate(post.createdAt)}</p>
+                <p className="text-[14px] text-[var(--gray400)]">
+                  {formatDate(post.createdAt)}
+                </p>
               </div>
             </div>
           </div>
