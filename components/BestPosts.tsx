@@ -4,6 +4,7 @@ import icon_medal from "@/public/assets/icon_medal.png";
 import icon_favorite from "@/public/assets/icon_favorite.png";
 import Image from "next/image";
 import formatDate from "@/utils/formatDate";
+import getBestPostsPerPage from "@/utils/getBestPostsPerPage";
 
 type BestPostsData = {
   id: number;
@@ -57,19 +58,6 @@ export default function BestPosts({ initialBestPosts }: BestPostsProps) {
 
     fetchBestPosts();
   }, [pageSize, initialBestPosts]);
-
-  function getBestPostsPerPage(screenSize: string) {
-    switch (screenSize) {
-      case "desktop":
-        return 3;
-      case "tablet":
-        return 2;
-      case "mobile":
-        return 1;
-      default:
-        return 3;
-    }
-  }
 
   function handleMediaQueryChange() {
     if (typeof window !== "undefined") {
