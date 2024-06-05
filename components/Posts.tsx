@@ -44,12 +44,12 @@ export async function getStaticProps() {
   }
 }
 
-export default function Posts({ initialPosts }: PostsProps) {
-  const selectOptions = [
-    { value: "recent", label: "최신순" },
-    { value: "like", label: "좋아요순" },
-  ];
+const selectOptions = [
+  { value: "recent", label: "최신순" },
+  { value: "like", label: "좋아요순" },
+];
 
+export default function Posts({ initialPosts }: PostsProps) {
   const [posts, setPosts] = useState<PostsData[]>(initialPosts);
   const [keyword, setKeyword] = useState("");
   const [isDropdownView, setDropdownView] = useState(false);
@@ -62,7 +62,6 @@ export default function Posts({ initialPosts }: PostsProps) {
           orderBy: order,
           keyword: keyword,
         });
-        console.log(data);
 
         setPosts(data);
       } catch (error) {
