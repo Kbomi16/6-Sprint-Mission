@@ -36,7 +36,9 @@ export default function Header() {
         <Link
           href="/boards"
           className={`hover:text-[--main] ${
-            pathName === "/boards" ? "text-[--main]" : ""
+            pathName.includes("/boards") || pathName.includes("/addBoards")
+              ? "text-[--main]"
+              : ""
           }`}
         >
           자유게시판
