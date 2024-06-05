@@ -8,7 +8,7 @@ import Image from "next/image";
 
 function Footer() {
   return (
-    <footer className="b-[0] relative h-[160px] w-full bg-gray-800 py-6 text-white">
+    <footer className="b-[0] relative mt-auto h-[160px] w-full bg-gray-800 py-6 text-white">
       <div className="container mx-auto flex flex-col-reverse items-center justify-between md:flex-row">
         <p className="relative -left-[10rem] top-[1rem] mb-4 text-sm md:left-0 md:top-0 md:mb-0 md:text-base">
           ©codeit - 2024
