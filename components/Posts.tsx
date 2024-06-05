@@ -94,6 +94,7 @@ export default function Posts({ initialPosts }: PostsProps) {
           <input
             className="flex h-[42px] flex-shrink-0 flex-grow basis-auto rounded-[0.5rem] border-none bg-[var(--coolgray100)] px-[2.8rem] py-[0.8rem] focus:outline-none"
             placeholder="검색할 게시글 제목을 입력해주세요"
+            type="search"
             onChange={handleKeywordSearch}
           />
         </div>
