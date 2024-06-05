@@ -13,7 +13,7 @@ export default function boards() {
       <div className="mb-4 flex items-center justify-between">
         <h3 className="mb-4 text-[20px] font-bold">게시글</h3>
         <Link
-          href="/addPost"
+          href="/addBoards"
           className="inline-flex h-[42px] cursor-pointer items-center justify-center rounded-[0.5rem] border-none bg-[--btn1] px-[1rem] py-[0.5rem] text-white hover:bg-[--btn2]"
         >
           글쓰기
