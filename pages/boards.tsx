@@ -1,6 +1,7 @@
 import React from "react";
 import BestPosts from "@/components/BestPosts";
 import Posts from "@/components/Posts";
+import Link from "next/link";
 
 export default function boards() {
   return (
@@ -11,9 +12,12 @@ export default function boards() {
       </div>
       <div className="mb-4 flex items-center justify-between">
         <h3 className="mb-4 text-[20px] font-bold">게시글</h3>
-        <button className="inline-flex h-[42px] cursor-pointer items-center justify-center rounded-[0.5rem] border-none bg-[--btn1] px-[1rem] py-[0.5rem] text-white hover:bg-[--btn2]">
+        <Link
+          href="/addPost"
+          className="inline-flex h-[42px] cursor-pointer items-center justify-center rounded-[0.5rem] border-none bg-[--btn1] px-[1rem] py-[0.5rem] text-white hover:bg-[--btn2]"
+        >
           글쓰기
-        </button>
+        </Link>
       </div>
       <Posts initialPosts={[]} />
     </div>
