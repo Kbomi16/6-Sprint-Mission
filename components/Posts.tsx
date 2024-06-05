@@ -7,6 +7,7 @@ import icon_search from "@/public/assets/icon_search.png";
 import icon_order from "@/public/assets/icon_order.png";
 import icon_dropdown from "@/public/assets/icon_dropdown.png";
 import formatDate from "@/utils/formatDate";
+import Link from "next/link";
 
 type PostsData = {
   id: number;
@@ -131,9 +132,12 @@ export default function Posts({ initialPosts }: PostsProps) {
       <div>
         {posts.map((post) => {
           return (
-            <div key={post.id} className="">
+            <div key={post.id}>
               <div className="w-full max-w-[1200px] border-b-[1px] border-[var(--gray100)] pb-4 pt-4">
-                <div className="flex h-[80px] items-start justify-between gap-[0.3rem]">
+                <Link
+                  href={`/boards/${post.id}`}
+                  className="flex h-[80px] items-start justify-between gap-[0.3rem]"
+                >
                   <h3 className="m-0 p-0 font-bold">{post.title}</h3>
                   {post.image && (
                     <div className="flex h-[72px] w-[72px] items-center justify-center rounded-[0.3rem] border-[1.5px] border-[var(--gray100)] bg-white p-4">
@@ -145,7 +149,7 @@ export default function Posts({ initialPosts }: PostsProps) {
                       />
                     </div>
                   )}
-                </div>
+                </Link>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-[0.5rem]">
                     <Image
