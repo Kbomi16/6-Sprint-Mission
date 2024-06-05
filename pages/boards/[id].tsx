@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { getPostsComments, getPostsDetail } from "@/api/api";
-import React from "react";
+import React, { useState } from "react";
 import icon_optionbar from "@/public/assets/icon_optionbar.png";
 import Image from "next/image";
 import icon_profile from "@/public/assets/icon_profile.png";
@@ -63,6 +64,12 @@ export async function getServerSideProps(context: { params: { id: any } }) {
 }
 
 export default function postDetail({ post, postComment }: PostsProps) {
+  const [comment, setComment] = useState("");
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value);
+  };
+
   return (
     <div className="m-[8rem_auto_2rem] w-full max-w-[1200px] px-4 md:m-[0] md:p-[8rem_5rem_5rem] lg:m-[0_auto_5rem]">
       <div className="flex items-start justify-between">
@@ -86,12 +93,15 @@ export default function postDetail({ post, postComment }: PostsProps) {
       <div className="mt-14 flex flex-col">
         <h3 className="mb-2 text-[20px] font-bold">댓글 달기</h3>
         <textarea
+          onChange={handleInputChange}
           name="content"
           placeholder="댓글을 입력해주세요"
           className="w-full resize-none rounded-md border-none bg-[--coolgray100] px-3 py-2 text-sm focus:outline-[--main]"
           rows={5}
         />
-        <button className="float-right ml-auto mt-4 block h-[42px] cursor-pointer items-center justify-center rounded-[0.5rem] border-none bg-[--btn1] px-6 py-[0.5rem] text-white hover:bg-[--btn2]">
+        <button
+          className={`float-right ml-auto mt-4 block h-[42px] items-center justify-center rounded-[0.5rem] border-none bg-[--btn1] px-6 py-[0.5rem] text-white ${comment ? "bg-[--main] hover:bg-[--btn2]" : "cursor-not-allowed bg-gray-300"}`}
+        >
           등록
         </button>
       </div>
