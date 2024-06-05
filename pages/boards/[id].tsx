@@ -9,6 +9,7 @@ import formatDate from "@/utils/formatDate";
 import { displayTime } from "./../../utils/displayTime";
 import Link from "next/link";
 import icon_back from "@/public/assets/icon_back.png";
+import img_nocomments from "@/public/assets/img_nocomments.png";
 
 type PostsData = {
   id: number;
@@ -106,7 +107,7 @@ export default function postDetail({ post, postComment }: PostsProps) {
         </button>
       </div>
       <div className="mt-4 flex w-full flex-col">
-        {postComment &&
+        {postComment.length > 0 ? (
           postComment.map((comment) => (
             <div
               key={comment.id}
@@ -147,7 +148,17 @@ export default function postDetail({ post, postComment }: PostsProps) {
                 </div>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <div className="m-auto flex w-full items-center justify-center">
+            <Image
+              src={img_nocomments}
+              alt="댓글 없음"
+              width={151}
+              height={195}
+            />
+          </div>
+        )}
       </div>
       <Link
         href="/boards"
