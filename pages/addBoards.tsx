@@ -49,7 +49,7 @@ function AddItem({
       <div className="mb-8 flex items-center justify-between">
         <h3 className="text-xl font-semibold">게시글 쓰기</h3>
         <button
-          className={`rounded-md px-4 py-2 ${isDisabled ? "cursor-not-allowed bg-gray-300" : "bg-blue-500 hover:bg-blue-600"} font-semibold text-white`}
+          className={`rounded-md px-4 py-2 ${isDisabled ? "cursor-not-allowed bg-gray-300" : "bg-blue-500 hover:bg-blue-600"} text-white`}
           disabled={isDisabled}
           onClick={handleSubmit}
         >
