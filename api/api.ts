@@ -12,3 +12,15 @@ export async function getBestPosts({ pageSize = 3 }) {
   );
   return data.list;
 }
+
+export async function getPostsDetail(articleId: string) {
+  const { data } = await instance.get(`/articles/${articleId}`);
+  return data;
+}
+
+export async function getPostsComments(articleId: string) {
+  const { data } = await instance.get(
+    `/articles/${articleId}/comments?limit=100`,
+  );
+  return data.list;
+}
