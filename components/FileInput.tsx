@@ -51,16 +51,25 @@ function FileInput({ name, value, initialPreview, onChange }: FileInputProps) {
   }, [value, initialPreview]);
 
   return (
-    <div className="w-282 h-282 rounded-0.5rem bg-coolgray100 relative overflow-hidden">
+    <div className="rounded-0.5rem relative my-2 h-[162px] w-[162px] overflow-hidden rounded-md bg-[--coolgray100] lg:h-[282px] lg:w-[282px]">
       <div className="flex h-full w-full items-center justify-center">
-        <Image
-          className={`${preview ? "opacity-48" : ""}`}
-          src={preview || previewImg}
-          alt="이미지 미리보기"
-          onClick={handleImageClick}
-          width={282}
-          height={282}
-        />
+        {preview ? (
+          <Image
+            src={preview || previewImg}
+            alt="이미지 미리보기"
+            onClick={handleImageClick}
+            layout="fill"
+            objectFit="cover"
+          />
+        ) : (
+          <Image
+            src={preview || previewImg}
+            alt="이미지 미리보기"
+            onClick={handleImageClick}
+            width={74}
+            height={84}
+          />
+        )}
       </div>
       <input
         className="absolute left-0 top-0 h-full w-full cursor-pointer opacity-0"
@@ -71,7 +80,7 @@ function FileInput({ name, value, initialPreview, onChange }: FileInputProps) {
       />
       {value && (
         <button
-          className="w-26 h-26 rounded-10px absolute right-9 top-9 cursor-pointer border-none bg-black bg-opacity-40 p-7"
+          className="absolute right-[9px] top-[9px] h-[26px] w-[26px] cursor-pointer rounded-full border-none bg-black bg-opacity-40 p-1 hover:bg-[--main]"
           onClick={handleClearClick}
         >
           <Image src={icon_reset} alt="선택해제" width={26} height={26} />
