@@ -22,10 +22,16 @@ export default function signup() {
   const [passwordConfirmError, setPasswordConfirmError] = useState<string>("");
 
   const [isVisibilityIcon, setIsVisibilityIcon] = useState<boolean>(false);
+  const [isVisibilityIconConfirm, setIsVisibilityIconConfirm] =
+    useState<boolean>(false);
+
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const isRegexValid =
-    EMAIL_REGEX.test(email.trim()) && EIGHT_NUMBERS_REGEX.test(password.trim());
+    EMAIL_REGEX.test(email.trim()) &&
+    EIGHT_NUMBERS_REGEX.test(password.trim()) &&
+    nickname.trim() !== "" &&
+    password === passwordConfirm;
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -84,6 +90,10 @@ export default function signup() {
 
   const togglePasswordVisibility = () => {
     setIsVisibilityIcon(!isVisibilityIcon);
+  };
+
+  const togglePasswordConfirmVisibility = () => {
+    setIsVisibilityIconConfirm(!isVisibilityIconConfirm);
   };
 
   return (
@@ -176,7 +186,7 @@ export default function signup() {
               비밀번호 확인
             </label>
             <input
-              type={isVisibilityIcon ? "text" : "password"}
+              type={isVisibilityIconConfirm ? "text" : "password"}
               placeholder="비밀번호를 다시 한 번 입력해주세요"
               id="confirm_password"
               onChange={handlePasswordConfirmChange}
@@ -185,10 +195,10 @@ export default function signup() {
               }`}
             />
             <Image
-              src={isVisibilityIcon ? iconOn : iconOff}
+              src={isVisibilityIconConfirm ? iconOn : iconOff}
               alt="password visibility off icon"
               className="absolute right-[1rem] top-[3.2rem] h-6 w-6 cursor-pointer"
-              onClick={togglePasswordVisibility}
+              onClick={togglePasswordConfirmVisibility}
             />
             {passwordConfirmError && (
               <p className="errorMessage ml-4 text-xs text-red-500">
@@ -197,9 +207,9 @@ export default function signup() {
             )}
           </div>
           <button
-            id="btn_large"
-            className={`w-full rounded-[5rem] bg-[--btn4] px-5 py-3 text-white lg:w-[512px] ${
-              !isDisabled && "cursor-not-allowed opacity-50"
+            type="submit"
+            className={`w-full cursor-pointer rounded-[5rem] bg-[--btn4] px-5 py-3 text-white lg:w-[512px] ${
+              !isDisabled && "bg-[--main]"
             }`}
             disabled={!isDisabled}
           >

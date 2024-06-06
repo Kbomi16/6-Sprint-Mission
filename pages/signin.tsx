@@ -121,9 +121,8 @@ export default function signin() {
           </div>
           <button
             type="submit"
-            id="btn_large"
-            className={`w-full rounded-[5rem] bg-[--btn4] px-5 py-3 text-white lg:w-[512px] ${
-              !isDisabled && "cursor-not-allowed opacity-50"
+            className={`w-full cursor-pointer rounded-[5rem] bg-[--btn4] px-5 py-3 text-white lg:w-[512px] ${
+              !isDisabled && "bg-[--main]"
             }`}
             disabled={!isDisabled}
           >
