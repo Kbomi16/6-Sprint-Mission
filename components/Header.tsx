@@ -4,6 +4,7 @@ import logo_text from "../public/assets/logo_text.png";
 import logo from "../public/assets/logo.png";
 import Image from "next/image";
 import Link from "next/link";
+import icon_profile from "@/public/assets/icon_profile.png";
 
 export default function Header() {
   const router = useRouter();
@@ -15,6 +16,8 @@ export default function Header() {
   };
 
   const pathName = router.pathname;
+
+  const isAccessToken = localStorage.getItem("accessToken");
 
   return (
     <div className="fixed top-0 z-50 flex h-16 w-full items-center justify-between gap-4 bg-white px-[24px] py-0 lg:gap-12 lg:px-48 lg:py-4">
@@ -52,13 +55,17 @@ export default function Header() {
           중고마켓
         </Link>
       </nav>
-      <button
-        id="btn_small"
-        onClick={goToSignin}
-        className="inline-flex h-[42px] w-[128px] cursor-pointer items-center justify-center rounded-[0.5rem] border-none bg-[--btn1] px-[0.5rem] py-[1.5rem] text-white hover:bg-[--btn2]"
-      >
-        로그인
-      </button>
+      {isAccessToken ? (
+        <Image src={icon_profile} alt="프로필" width={48} height={48} />
+      ) : (
+        <button
+          id="btn_small"
+          onClick={goToSignin}
+          className="inline-flex h-[42px] w-[128px] cursor-pointer items-center justify-center rounded-[0.5rem] border-none bg-[--btn1] px-[0.5rem] py-[1.5rem] text-white hover:bg-[--btn2]"
+        >
+          로그인
+        </button>
+      )}
     </div>
   );
 }
