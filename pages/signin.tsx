@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import instance from "@/lib/axios";
 
 export default function signin() {
   const [email, setEmail] = useState<string>("");
@@ -36,10 +37,25 @@ export default function signin() {
 
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleformSubmit = async () => {
+    try {
+      const response = await instance.post("/auth/signIn", {
+        email,
+        password,
+      });
+
+      const accessToken = response.data.accessToken;
+      localStorage.setItem("accessToken", accessToken);
+    } catch (error) {
+      console.log("데이터 전송 실패", error);
+    }
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (isRegexValid) {
+      handleformSubmit();
       router.push("/");
     } else {
       if (email === "") {
@@ -124,7 +140,7 @@ export default function signin() {
             className={`w-full cursor-pointer rounded-[5rem] bg-[--btn4] px-5 py-3 text-white lg:w-[512px] ${
               !isDisabled && "bg-[--main]"
             }`}
-            disabled={!isDisabled}
+            disabled={isDisabled}
           >
             로그인
           </button>

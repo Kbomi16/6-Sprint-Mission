@@ -9,17 +9,19 @@ import { EIGHT_NUMBERS_REGEX, EMAIL_REGEX } from "@/utils/regex";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
+import instance from "@/lib/axios";
 
 export default function signup() {
   const [email, setEmail] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [passwordConfirm, setPasswordConfirm] = useState<string>("");
+  const [passwordConfirmation, setpasswordConfirmation] = useState<string>("");
 
   const [emailError, setEmailError] = useState<string>("");
   const [nicknameError, setNicknameError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
-  const [passwordConfirmError, setPasswordConfirmError] = useState<string>("");
+  const [passwordConfirmationError, setpasswordConfirmationError] =
+    useState<string>("");
 
   const [isVisibilityIcon, setIsVisibilityIcon] = useState<boolean>(false);
   const [isVisibilityIconConfirm, setIsVisibilityIconConfirm] =
@@ -31,7 +33,7 @@ export default function signup() {
     EMAIL_REGEX.test(email.trim()) &&
     EIGHT_NUMBERS_REGEX.test(password.trim()) &&
     nickname.trim() !== "" &&
-    password === passwordConfirm;
+    password === passwordConfirmation;
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -48,20 +50,45 @@ export default function signup() {
     setPasswordError("");
   };
 
-  const handlePasswordConfirmChange = (
+  const handlepasswordConfirmationChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setPasswordConfirm(e.target.value);
-    setPasswordConfirmError("");
+    setpasswordConfirmation(e.target.value);
+    setpasswordConfirmationError("");
   };
 
   const router = useRouter();
+
+  const handleformSubmit = async () => {
+    try {
+      const response = await instance.post(
+        "/auth/signUp",
+        {
+          email,
+          nickname,
+          password,
+          passwordConfirmation,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      const { accessToken } = response.data;
+      localStorage.setItem("accessToken", accessToken);
+      router.push("/");
+    } catch (error) {
+      console.log({ email, nickname, password, passwordConfirmation });
+      console.log("데이터 전송 실패", error);
+    }
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (isRegexValid) {
-      router.push("/signin");
+      handleformSubmit();
     } else {
       if (email === "") {
         setEmailError("이메일을 입력해주세요.");
@@ -76,23 +103,23 @@ export default function signup() {
       } else if (!EIGHT_NUMBERS_REGEX.test(password.trim())) {
         setPasswordError("비밀번호를 8자 이상 입력해주세요.");
       }
-      if (passwordConfirm === "") {
-        setPasswordConfirmError("비밀번호를 다시 한 번 입력해주세요.");
-      } else if (password !== passwordConfirm) {
-        setPasswordConfirmError("비밀번호가 일치하지 않습니다.");
+      if (passwordConfirmation === "") {
+        setpasswordConfirmationError("비밀번호를 다시 한 번 입력해주세요.");
+      } else if (password !== passwordConfirmation) {
+        setpasswordConfirmationError("비밀번호가 일치하지 않습니다.");
       }
     }
   };
 
   useEffect(() => {
     setIsDisabled(!isRegexValid);
-  }, [email, nickname, password, passwordConfirm, isRegexValid]);
+  }, [email, nickname, password, passwordConfirmation, isRegexValid]);
 
   const togglePasswordVisibility = () => {
     setIsVisibilityIcon(!isVisibilityIcon);
   };
 
-  const togglePasswordConfirmVisibility = () => {
+  const togglepasswordConfirmationVisibility = () => {
     setIsVisibilityIconConfirm(!isVisibilityIconConfirm);
   };
 
@@ -189,20 +216,22 @@ export default function signup() {
               type={isVisibilityIconConfirm ? "text" : "password"}
               placeholder="비밀번호를 다시 한 번 입력해주세요"
               id="confirm_password"
-              onChange={handlePasswordConfirmChange}
+              onChange={handlepasswordConfirmationChange}
               className={`w-full rounded-xl bg-[--coolgray100] p-4 text-base text-gray-400 focus:outline-[--main] lg:w-[512px] ${
-                passwordConfirmError ? "border-2 border-red-500" : "border-none"
+                passwordConfirmationError
+                  ? "border-2 border-red-500"
+                  : "border-none"
               }`}
             />
             <Image
               src={isVisibilityIconConfirm ? iconOn : iconOff}
               alt="password visibility off icon"
               className="absolute right-[1rem] top-[3.2rem] h-6 w-6 cursor-pointer"
-              onClick={togglePasswordConfirmVisibility}
+              onClick={togglepasswordConfirmationVisibility}
             />
-            {passwordConfirmError && (
+            {passwordConfirmationError && (
               <p className="errorMessage ml-4 text-xs text-red-500">
-                {passwordConfirmError}
+                {passwordConfirmationError}
               </p>
             )}
           </div>
@@ -211,7 +240,7 @@ export default function signup() {
             className={`w-full cursor-pointer rounded-[5rem] bg-[--btn4] px-5 py-3 text-white lg:w-[512px] ${
               !isDisabled && "bg-[--main]"
             }`}
-            disabled={!isDisabled}
+            disabled={isDisabled}
           >
             회원가입
           </button>
