@@ -2,7 +2,9 @@ import instance from "@/lib/axios";
 
 export async function getPosts({ orderBy = "", keyword = "" }) {
   const params = new URLSearchParams({ orderBy, keyword });
-  const { data } = await instance.get(`/articles?${params.toString()}`);
+  const { data } = await instance.get(
+    `/articles?page=1&pageSize=100&${params.toString()}`,
+  );
   return data.list;
 }
 
