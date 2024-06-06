@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo_text from "../public/assets/logo_text.png";
 import logo from "../public/assets/logo.png";
 import Image from "next/image";
@@ -16,8 +16,12 @@ export default function Header() {
   };
 
   const pathName = router.pathname;
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
-  const isAccessToken = localStorage.getItem("accessToken");
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setAccessToken(token);
+  }, []);
 
   return (
     <div className="fixed top-0 z-50 flex h-16 w-full items-center justify-between gap-4 bg-white px-[24px] py-0 lg:gap-12 lg:px-48 lg:py-4">
@@ -55,9 +59,10 @@ export default function Header() {
           중고마켓
         </Link>
       </nav>
-      {isAccessToken ? (
+      {accessToken && (
         <Image src={icon_profile} alt="프로필" width={48} height={48} />
-      ) : (
+      )}
+      {!accessToken && (
         <button
           id="btn_small"
           onClick={goToSignin}
