@@ -1,10 +1,15 @@
 import instance from "@/lib/axios";
 
 export async function getTotalPosts({ pageSize = 10000 }) {
-  const { data } = await instance.get(
-    `/articles?&pageSize=${pageSize}&orderBy=like`,
-  );
-  return data.list;
+  try {
+    const { data } = await instance.get(
+      `/articles?&pageSize=${pageSize}&orderBy=like`,
+    );
+    return data.list;
+  } catch (error) {
+    console.error("getTotalPosts 함수에서 오류 발생:", error);
+    throw error;
+  }
 }
 
 export async function getPosts({
@@ -13,31 +18,51 @@ export async function getPosts({
   page = 1,
   pageSize = 10,
 }) {
-  const params = new URLSearchParams({
-    orderBy,
-    keyword,
-    page: page.toString(),
-    pageSize: pageSize.toString(),
-  });
-  const { data } = await instance.get(`/articles?${params.toString()}`);
-  return data.list;
+  try {
+    const params = new URLSearchParams({
+      orderBy,
+      keyword,
+      page: page.toString(),
+      pageSize: pageSize.toString(),
+    });
+    const { data } = await instance.get(`/articles?${params.toString()}`);
+    return data.list;
+  } catch (error) {
+    console.error("getPosts 함수에서 오류 발생:", error);
+    throw error;
+  }
 }
 
 export async function getBestPosts({ pageSize = 3 }) {
-  const { data } = await instance.get(
-    `/articles?&pageSize=${pageSize}&orderBy=like`,
-  );
-  return data.list;
+  try {
+    const { data } = await instance.get(
+      `/articles?&pageSize=${pageSize}&orderBy=like`,
+    );
+    return data.list;
+  } catch (error) {
+    console.error("getBestPosts 함수에서 오류 발생:", error);
+    throw error;
+  }
 }
 
 export async function getPostsDetail(articleId: string) {
-  const { data } = await instance.get(`/articles/${articleId}`);
-  return data;
+  try {
+    const { data } = await instance.get(`/articles/${articleId}`);
+    return data;
+  } catch (error) {
+    console.error("getPostsDetail 함수에서 오류 발생:", error);
+    throw error;
+  }
 }
 
 export async function getPostsComments(articleId: string) {
-  const { data } = await instance.get(
-    `/articles/${articleId}/comments?limit=100`,
-  );
-  return data.list;
+  try {
+    const { data } = await instance.get(
+      `/articles/${articleId}/comments?limit=100`,
+    );
+    return data.list;
+  } catch (error) {
+    console.error("getPostsComments 함수에서 오류 발생:", error);
+    throw error;
+  }
 }
