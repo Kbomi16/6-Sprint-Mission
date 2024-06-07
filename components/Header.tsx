@@ -40,26 +40,28 @@ export default function Header() {
             <Image src={logo} alt="로고" width={153} />
           </picture>
         </div>
-        <nav className="flex flex-row gap-2 text-lg font-bold md:gap-8">
-          <Link
-            href="/boards"
-            className={`hover:text-[--main] ${
-              pathName.includes("/boards") || pathName.includes("/addBoards")
-                ? "text-[--main]"
-                : ""
-            }`}
-          >
-            자유게시판
-          </Link>
-          <Link
-            href="/items"
-            className={`hover:text-[--main] ${
-              pathName === "/items" ? "text-[--main]" : ""
-            }`}
-          >
-            중고마켓
-          </Link>
-        </nav>
+        {accessToken && (
+          <nav className="flex flex-row gap-2 text-lg font-bold md:gap-8">
+            <Link
+              href="/boards"
+              className={`hover:text-[--main] ${
+                pathName.includes("/boards") || pathName.includes("/addBoards")
+                  ? "text-[--main]"
+                  : ""
+              }`}
+            >
+              자유게시판
+            </Link>
+            <Link
+              href="/items"
+              className={`hover:text-[--main] ${
+                pathName === "/items" ? "text-[--main]" : ""
+              }`}
+            >
+              중고마켓
+            </Link>
+          </nav>
+        )}
       </div>
       {accessToken && (
         <Image src={icon_profile} alt="프로필" width={48} height={48} />

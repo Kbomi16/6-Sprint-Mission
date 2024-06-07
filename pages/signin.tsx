@@ -46,6 +46,7 @@ export default function signin() {
 
       const accessToken = response.data.accessToken;
       localStorage.setItem("accessToken", accessToken);
+      window.location.reload();
     } catch (error) {
       console.log("데이터 전송 실패", error);
     }
@@ -53,11 +54,9 @@ export default function signin() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (isRegexValid) {
       handleformSubmit();
       router.push("/");
-      window.location.reload();
     } else {
       if (email === "") {
         setEmailError("이메일을 입력해주세요.");
