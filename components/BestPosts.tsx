@@ -61,22 +61,20 @@ export default function BestPosts({ initialBestPosts }: BestPostsProps) {
   }, [pageSize, initialBestPosts]);
 
   function handleMediaQueryChange() {
-    if (typeof window !== "undefined") {
-      const mqlDesktop = window.matchMedia("(min-width: 1200px)");
-      const mqlTablet = window.matchMedia(
-        "(min-width: 768px) and (max-width: 1199px)",
-      );
+    const mqlDesktop = window.matchMedia("(min-width: 1200px)");
+    const mqlTablet = window.matchMedia(
+      "(min-width: 768px) and (max-width: 1199px)",
+    );
 
-      const screenSize = mqlDesktop.matches
-        ? "desktop"
-        : mqlTablet.matches
-          ? "tablet"
-          : "mobile";
-      const bestPostsPerPage = getBestPostsPerPage(screenSize);
-      setPageSize(bestPostsPerPage);
+    const screenSize = mqlDesktop.matches
+      ? "desktop"
+      : mqlTablet.matches
+        ? "tablet"
+        : "mobile";
+    const bestPostsPerPage = getBestPostsPerPage(screenSize);
+    setPageSize(bestPostsPerPage);
 
-      return screenSize;
-    }
+    return screenSize;
   }
 
   useEffect(() => {
