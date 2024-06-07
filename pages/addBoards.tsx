@@ -46,11 +46,6 @@ function AddItem({
   const handleformSubmit = async () => {
     const token = localStorage.getItem("accessToken");
 
-    if (!token) {
-      console.log("토큰이 없습니다");
-      return;
-    }
-
     try {
       let imageUrl = "";
 
@@ -95,8 +90,8 @@ function AddItem({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     handleformSubmit();
+    alert("게시글 등록이 완료되었습니다!");
     router.push("/boards");
-
     setValues(INITIAL_VALUES);
   };
 
