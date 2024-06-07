@@ -118,7 +118,20 @@ export default function postDetail({ post, postComment }: PostsProps) {
           <p className="text-[14px] text-[var(--gray600)]">{post.likeCount}</p>
         </div>
       </div>
-      <p>{post.content}</p>
+      <div className="flex justify-between">
+        <p>{post.content}</p>
+        {post.image && (
+          <div className="flex items-center justify-center rounded-[0.3rem] border-[1.5px] border-[var(--gray100)] bg-white p-2">
+            <Image
+              src={post.image}
+              width={100}
+              height={100}
+              alt="이미지"
+              className="rounded-[0.3rem]"
+            />
+          </div>
+        )}
+      </div>
       <div className="mt-14 flex flex-col">
         <h3 className="mb-2 text-[20px] font-bold">댓글 달기</h3>
         <textarea
