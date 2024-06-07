@@ -1,15 +1,23 @@
 import React, { KeyboardEvent, useState } from "react";
 import FileInput from "../components/FileInput";
+import { useRouter } from "next/router";
+import instance from "@/lib/axios";
 
 const INITIAL_VALUES = {
   title: "",
   content: "",
-  imgFile: null as File | null,
+  image: null as File | null,
 };
 
 type AddPostProps = {
   initialValues?: typeof INITIAL_VALUES;
   initialPreview?: string;
+};
+
+type PostData = {
+  title: string;
+  content: string;
+  image?: string;
 };
 
 function AddItem({
@@ -33,14 +41,62 @@ function AddItem({
     handleChange(name, value);
   };
 
+  const router = useRouter();
+
+  const handleformSubmit = async () => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      console.log("토큰이 없습니다");
+      return;
+    }
+
+    try {
+      let imageUrl = "";
+
+      if (values.image) {
+        const formData = new FormData();
+        formData.append("image", values.image);
+
+        const imageResponse = await instance.post("/images/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        imageUrl = imageResponse.data.url;
+      }
+
+      // 이미지가 없을 때도 요청을 보낼 수 있게
+      const postData: PostData = {
+        title: values.title,
+        content: values.content,
+      };
+
+      // 이미지 URL이 존재할 경우에만 이미지 데이터 추가
+      if (imageUrl) {
+        postData.image = imageUrl;
+      }
+
+      await instance.post("/articles", postData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      window.location.reload();
+    } catch (error) {
+      console.log("데이터 전송 실패", error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("title", values.title);
-    formData.append("content", values.content);
-    if (values.imgFile) {
-      formData.append("imgFile", values.imgFile);
-    }
+    handleformSubmit();
+    router.push("/boards");
+
     setValues(INITIAL_VALUES);
   };
 
@@ -77,8 +133,8 @@ function AddItem({
         />
         <h4 className="font-semibold">이미지</h4>
         <FileInput
-          name="imgFile"
-          value={values.imgFile}
+          name="image"
+          value={values.image}
           initialPreview={initialPreview}
           onChange={(name, file) => handleChange(name, file)}
         />
