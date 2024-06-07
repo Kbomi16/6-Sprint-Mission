@@ -6,7 +6,7 @@ import Image from "next/image";
 import icon_profile from "@/public/assets/icon_profile.png";
 import icon_favorite from "@/public/assets/icon_favorite.png";
 import formatDate from "@/utils/formatDate";
-import { displayTime } from "./../../utils/displayTime";
+import { displayTime } from "../../utils/displayTime";
 import Link from "next/link";
 import icon_back from "@/public/assets/icon_back.png";
 import img_nocomments from "@/public/assets/img_nocomments.png";
