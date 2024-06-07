@@ -57,6 +57,7 @@ export default function signin() {
     if (isRegexValid) {
       handleformSubmit();
       router.push("/");
+      window.location.reload();
     } else {
       if (email === "") {
         setEmailError("이메일을 입력해주세요.");

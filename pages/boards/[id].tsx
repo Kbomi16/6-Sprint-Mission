@@ -10,6 +10,7 @@ import { displayTime } from "./../../utils/displayTime";
 import Link from "next/link";
 import icon_back from "@/public/assets/icon_back.png";
 import img_nocomments from "@/public/assets/img_nocomments.png";
+import instance from "@/lib/axios";
 
 type PostsData = {
   id: number;
@@ -65,10 +66,37 @@ export async function getServerSideProps(context: { params: { id: any } }) {
 }
 
 export default function postDetail({ post, postComment }: PostsProps) {
-  const [comment, setComment] = useState("");
+  const [content, setContent] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(e.target.value);
+    setContent(e.target.value);
+  };
+
+  const handlesubmitComment = async () => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      console.log("토큰이 없습니다");
+      return;
+    }
+
+    try {
+      await instance.post(
+        `/articles/${post.id}/comments`,
+        { content },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      setContent("");
+      window.location.reload();
+    } catch (error) {
+      console.log(content, token);
+
+      console.log("댓글 등록 실패", error);
+    }
   };
 
   return (
@@ -101,7 +129,8 @@ export default function postDetail({ post, postComment }: PostsProps) {
           rows={5}
         />
         <button
-          className={`float-right ml-auto mt-4 block h-[42px] items-center justify-center rounded-[0.5rem] border-none bg-[--btn1] px-6 py-[0.5rem] text-white ${comment ? "bg-[--main] hover:bg-[--btn2]" : "cursor-not-allowed bg-gray-300"}`}
+          onClick={handlesubmitComment}
+          className={`float-right ml-auto mt-4 block h-[42px] items-center justify-center rounded-[0.5rem] border-none bg-[--btn1] px-6 py-[0.5rem] text-white ${content ? "bg-[--main] hover:bg-[--btn2]" : "cursor-not-allowed bg-gray-300"}`}
         >
           등록
         </button>
