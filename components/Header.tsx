@@ -17,11 +17,22 @@ export default function Header() {
 
   const pathName = router.pathname;
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isLogoutBoxVisible, setIsLogoutBoxVisible] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     setAccessToken(token);
   }, []);
+
+  const handleProfileClick = () => {
+    setIsLogoutBoxVisible(!isLogoutBoxVisible);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    router.push("/");
+    window.location.reload();
+  };
 
   return (
     <div className="fixed top-0 z-50 flex h-16 w-full items-center justify-between gap-4 bg-white px-[24px] py-0 lg:gap-12 lg:px-48 lg:py-4">
@@ -64,7 +75,24 @@ export default function Header() {
         )}
       </div>
       {accessToken && (
-        <Image src={icon_profile} alt="프로필" width={48} height={48} />
+        <Image
+          src={icon_profile}
+          alt="프로필"
+          width={48}
+          height={48}
+          onClick={handleProfileClick}
+          className="cursor-pointer"
+        />
+      )}
+      {isLogoutBoxVisible && (
+        <div className="absolute right-5 top-14 z-50 rounded-lg bg-white px-4 py-2 shadow-md md:right-12 md:top-3">
+          <button
+            className="text-gray-700 hover:text-[--main]"
+            onClick={logout}
+          >
+            로그아웃
+          </button>
+        </div>
       )}
       {!accessToken && (
         <button
