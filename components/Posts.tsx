@@ -1,4 +1,4 @@
-import { getPosts } from "@/api/api";
+import { getPosts, getTotalPosts } from "@/api/api";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import icon_favorite from "@/public/assets/icon_favorite.png";
@@ -8,6 +8,7 @@ import icon_order from "@/public/assets/icon_order.png";
 import icon_dropdown from "@/public/assets/icon_dropdown.png";
 import formatDate from "@/utils/formatDate";
 import Link from "next/link";
+import Pagination from "./Pagination";
 
 type PostsData = {
   id: number;
@@ -56,12 +57,22 @@ export default function Posts({ initialPosts }: PostsProps) {
   const [isDropdownView, setDropdownView] = useState(false);
   const [order, setOrder] = useState(selectOptions[0].value);
 
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalPosts, setTotalPosts] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const totalPosts = await getTotalPosts({ pageSize });
+        setTotalPosts(totalPosts);
+
         const data = await getPosts({
           orderBy: order,
           keyword: keyword,
+          page: page,
+          pageSize: pageSize,
         });
 
         setPosts(data);
@@ -70,7 +81,7 @@ export default function Posts({ initialPosts }: PostsProps) {
       }
     };
     fetchData();
-  }, [order, keyword]);
+  }, [order, keyword, page, pageSize]);
 
   const handleKeywordSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value);
@@ -83,6 +94,11 @@ export default function Posts({ initialPosts }: PostsProps) {
   const selectOption = (value: string) => {
     setOrder(value);
     setDropdownView(false);
+  };
+
+  const handlePageChange = (pageNumber: number) => {
+    setPage(pageNumber);
+    setCurrentPage(pageNumber);
   };
 
   return (
@@ -130,58 +146,64 @@ export default function Posts({ initialPosts }: PostsProps) {
         </div>
       </div>
       <div>
-        {posts.map((post) => {
-          return (
-            <div key={post.id}>
-              <div className="w-full max-w-[1200px] border-b-[1px] border-[var(--gray100)] pb-4 pt-4">
-                <Link
-                  href={`/boards/${post.id}`}
-                  className="flex h-[80px] items-start justify-between gap-[0.3rem]"
-                >
-                  <h3 className="m-0 p-0 font-bold">{post.title}</h3>
-                  {post.image && (
-                    <div className="flex h-[72px] w-[72px] items-center justify-center rounded-[0.3rem] border-[1.5px] border-[var(--gray100)] bg-white p-4">
+        {posts &&
+          posts.map((post) => {
+            return (
+              <div key={post.id}>
+                <div className="w-full max-w-[1200px] border-b-[1px] border-[var(--gray100)] pb-4 pt-4">
+                  <Link
+                    href={`/boards/${post.id}`}
+                    className="flex h-[80px] items-start justify-between gap-[0.3rem]"
+                  >
+                    <h3 className="m-0 p-0 font-bold">{post.title}</h3>
+                    {post.image && (
+                      <div className="flex h-[72px] w-[72px] items-center justify-center rounded-[0.3rem] border-[1.5px] border-[var(--gray100)] bg-white p-4">
+                        <Image
+                          src={post.image}
+                          alt="포스트 이미지"
+                          width={48}
+                          height={48}
+                        />
+                      </div>
+                    )}
+                  </Link>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-[0.5rem]">
                       <Image
-                        src={post.image}
-                        alt="포스트 이미지"
-                        width={48}
-                        height={48}
+                        src={img_profile}
+                        alt="프로필 이미지"
+                        width={24}
+                        height={24}
                       />
+                      <p className="text-[14px] text-[var(--gray600)]">
+                        {post.writer.nickname}
+                      </p>
+                      <p className="text-[14px] text-[var(--gray400)]">
+                        {formatDate(post.createdAt)}
+                      </p>
                     </div>
-                  )}
-                </Link>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-[0.5rem]">
-                    <Image
-                      src={img_profile}
-                      alt="프로필 이미지"
-                      width={24}
-                      height={24}
-                    />
-                    <p className="text-[14px] text-[var(--gray600)]">
-                      {post.writer.nickname}
-                    </p>
-                    <p className="text-[14px] text-[var(--gray400)]">
-                      {formatDate(post.createdAt)}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-[0.2rem]">
-                    <Image
-                      src={icon_favorite}
-                      alt="하트"
-                      width={16}
-                      height={16}
-                    />
-                    <p className="text-[14px] text-[var(--gray600)]">
-                      {post.likeCount}
-                    </p>
+                    <div className="flex items-center gap-[0.2rem]">
+                      <Image
+                        src={icon_favorite}
+                        alt="하트"
+                        width={16}
+                        height={16}
+                      />
+                      <p className="text-[14px] text-[var(--gray600)]">
+                        {post.likeCount}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(totalPosts / pageSize)}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

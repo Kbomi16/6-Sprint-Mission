@@ -1,10 +1,25 @@
 import instance from "@/lib/axios";
 
-export async function getPosts({ orderBy = "", keyword = "" }) {
-  const params = new URLSearchParams({ orderBy, keyword });
+export async function getTotalPosts({ pageSize = 10000 }) {
   const { data } = await instance.get(
-    `/articles?page=1&pageSize=100&${params.toString()}`,
+    `/articles?&pageSize=${pageSize}&orderBy=like`,
   );
+  return data.list;
+}
+
+export async function getPosts({
+  orderBy = "",
+  keyword = "",
+  page = 1,
+  pageSize = 10,
+}) {
+  const params = new URLSearchParams({
+    orderBy,
+    keyword,
+    page: page.toString(),
+    pageSize: pageSize.toString(),
+  });
+  const { data } = await instance.get(`/articles?${params.toString()}`);
   return data.list;
 }
 
