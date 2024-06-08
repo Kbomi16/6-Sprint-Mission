@@ -38,8 +38,14 @@ export default function Pagination({
       </button>
       {pages.length > 0 &&
         pages.map((i) => (
-          <div key={i}>
-            <div onClick={() => onPageChange(i)}>{i}</div>
+          <div
+            key={i}
+            className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-gray-300 font-bold ${
+              currentPage === i ? "bg-[--btn1] text-white" : ""
+            } hover:bg-[--btn1] hover:text-white`}
+            onClick={() => onPageChange(i)}
+          >
+            {i}
           </div>
         ))}
       <button
