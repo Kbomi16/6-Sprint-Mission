@@ -85,7 +85,7 @@ export default function Header() {
         />
       )}
       {isLogoutBoxVisible && (
-        <div className="absolute right-5 top-14 z-50 rounded-lg bg-white px-4 py-2 shadow-md md:right-12 md:top-3">
+        <div className="absolute right-5 top-14 z-50 rounded-lg bg-white px-4 py-2 shadow-md lg:right-12 lg:top-3">
           <button
             className="text-gray-700 hover:text-[--main]"
             onClick={logout}
