@@ -57,15 +57,14 @@ export default function Posts({ initialPosts }: PostsProps) {
   const [isDropdownView, setDropdownView] = useState(false);
   const [order, setOrder] = useState(selectOptions[0].value);
 
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [totalPosts, setTotalPosts] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1); // 현재 페이지 번호
+  const [pageSize, setPageSize] = useState(10); // 한 페이지당 보여질 게시글 개수
+  const [totalPosts, setTotalPosts] = useState(0); // 전체 게시글 수
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const totalPosts = await getTotalPosts({ pageSize });
+        const totalPosts = await getTotalPosts();
         setTotalPosts(totalPosts);
 
         const data = await getPosts({
@@ -96,9 +95,9 @@ export default function Posts({ initialPosts }: PostsProps) {
     setDropdownView(false);
   };
 
+  // 페이지 버튼을 누를 때도 page 변경하기
   const handlePageChange = (pageNumber: number) => {
     setPage(pageNumber);
-    setCurrentPage(pageNumber);
   };
 
   return (
@@ -200,7 +199,7 @@ export default function Posts({ initialPosts }: PostsProps) {
           })}
       </div>
       <Pagination
-        currentPage={currentPage}
+        currentPage={page}
         totalPages={Math.ceil(totalPosts / pageSize)}
         onPageChange={handlePageChange}
       />

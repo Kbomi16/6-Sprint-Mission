@@ -1,11 +1,12 @@
 import instance from "@/lib/axios";
 
-export async function getTotalPosts({ pageSize = 10000 }) {
+// 페이지네이션을 위한 전체 게시글 수
+export async function getTotalPosts() {
   try {
     const { data } = await instance.get(
-      `/articles?&pageSize=${pageSize}&orderBy=like`,
+      "/articles?&pageSize=10000&orderBy=recent",
     );
-    return data.list;
+    return data.list.length;
   } catch (error) {
     console.error("getTotalPosts 함수에서 오류 발생:", error);
     throw error;

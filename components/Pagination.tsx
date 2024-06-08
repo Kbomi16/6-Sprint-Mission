@@ -19,6 +19,14 @@ export default function Pagination({
     onPageChange(currentPage + 1);
   };
 
+  const pages = [];
+
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(i);
+  }
+  // console.log(pages);
+  // console.log(currentPage, totalPages);
+
   return (
     <div className="mt-8 flex items-center justify-center gap-4">
       <button
@@ -28,7 +36,12 @@ export default function Pagination({
       >
         {"<"}
       </button>
-
+      {pages.length > 0 &&
+        pages.map((i) => (
+          <div key={i}>
+            <div onClick={() => onPageChange(i)}>{i}</div>
+          </div>
+        ))}
       <button
         disabled={currentPage === totalPages}
         onClick={handleNext}
