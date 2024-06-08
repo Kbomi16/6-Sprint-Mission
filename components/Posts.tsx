@@ -156,7 +156,7 @@ export default function Posts({ initialPosts }: PostsProps) {
                   >
                     <h3 className="m-0 p-0 font-bold">{post.title}</h3>
                     {post.image && (
-                      <div className="flex h-[72px] w-[72px] items-center justify-center rounded-[0.3rem] border-[1.5px] border-[var(--gray100)] bg-white p-4">
+                      <div className="flex h-[72px] w-[72px] items-center justify-center overflow-hidden rounded-[0.3rem] border-[1.5px] border-[var(--gray100)] bg-white p-4">
                         <Image
                           src={post.image}
                           alt="포스트 이미지"
