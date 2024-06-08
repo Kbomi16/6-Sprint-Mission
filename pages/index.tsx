@@ -22,14 +22,14 @@ export default function Home() {
             </h1>
             <Link
               href="/items"
-              className="mt-4 inline-block rounded-full bg-[--main] px-8 py-3 text-white"
+              className="mt-4 inline-block rounded-full bg-[--main] px-8 py-3 text-white md:mb-4"
             >
               구경하러 가기
             </Link>
           </div>
           <Image
             src={img_home_top}
-            className="mt-8 h-auto w-full object-contain px-4 md:mt-0 md:w-1/2"
+            className="mt-8 h-auto w-full object-contain px-4 md:-mb-4 md:w-1/2 lg:mb-0"
             alt="메인이미지1"
           />
         </div>
@@ -65,7 +65,7 @@ export default function Home() {
             alt="home2"
             className="h-auto w-full object-contain px-4 md:w-1/2"
           />
-          <div className="flex flex-col gap-4 text-right md:text-left">
+          <div className="flex flex-col gap-4 text-right md:pl-12 md:text-left">
             <span className="text-lg text-[--main] md:text-xl">Search</span>
             <h1 className="text-2xl font-bold leading-tight md:text-5xl">
               구매를 원하는
@@ -89,7 +89,7 @@ export default function Home() {
             className="h-auto w-full object-contain px-2 md:w-1/2"
           />
 
-          <div className="flex flex-col gap-4 pl-8 text-left">
+          <div className="flex flex-col gap-4 pl-8 text-left md:pr-8">
             <span className="text-lg text-[--main] md:text-xl">Register</span>
             <h1 className="text-2xl font-bold leading-tight md:text-5xl">
               판매를 원하는
