@@ -1,34 +1,34 @@
-import React from 'react'
-import styles from '../styles/main.module.css'
-
-import icon_facebook from '@/public/assets/icon_facebook.png'
-import icon_twitter from '@/public/assets/icon_twitter.png'
-import icon_youtube from '@/public/assets/icon_youtube.png'
-import icon_insta from '@/public/assets/icon_insta.png'
-import Link from 'next/link'
-import Image from 'next/image'
+import React from "react";
+import icon_facebook from "@/public/assets/icon_facebook.png";
+import icon_twitter from "@/public/assets/icon_twitter.png";
+import icon_youtube from "@/public/assets/icon_youtube.png";
+import icon_insta from "@/public/assets/icon_insta.png";
+import Link from "next/link";
+import Image from "next/image";
 
 function Footer() {
   return (
-    <footer>
-      <div className={styles.nav}>
-        <p className={styles.year}>©codeit - 2024</p>
-        <div className={styles.nav2}>
-          <div className={styles.sub_nav}>
-            <p className={styles.p}>
-              <a href="./privacy.html">Privacy Policy</a>
+    <footer className="b-[0] relative mt-auto h-[160px] w-full bg-gray-800 py-6 text-white">
+      <div className="container mx-auto flex flex-col-reverse items-center justify-between md:flex-row">
+        <p className="relative -left-[10rem] top-[1rem] mb-4 text-sm md:left-0 md:top-0 md:mb-0 md:text-base">
+          ©codeit - 2024
+        </p>
+        <div className="flex flex-row items-center md:justify-between md:gap-[20rem]">
+          <div className="relative -left-[5rem] top-2 mb-4 flex items-center space-x-4 text-white md:-left-0 md:top-0 md:mb-0">
+            <p className="text-sm md:text-base">
+              <Link href="./privacy.html">Privacy Policy</Link>
             </p>
-            <p className={styles.p}>
-              <a href="./faq.html">FAQ</a>
+            <p className="text-sm md:text-base">
+              <Link href="./faq.html">FAQ</Link>
             </p>
           </div>
-          <div className={styles.icons}>
+          <div className="flex space-x-4">
             <Link
               href="https://www.facebook.com/"
               target="_blank"
               rel="noreferrer"
             >
-              <div className={styles.icon}>
+              <div className="h-5 w-5">
                 <Image
                   src={icon_facebook}
                   alt="facebook"
@@ -38,7 +38,7 @@ function Footer() {
               </div>
             </Link>
             <Link href="https://twitter.com/" target="_blank" rel="noreferrer">
-              <div className={styles.icon}>
+              <div className="h-5 w-5">
                 <Image
                   src={icon_twitter}
                   alt="twitter"
@@ -52,7 +52,7 @@ function Footer() {
               target="_blank"
               rel="noreferrer"
             >
-              <div className={styles.icon}>
+              <div className="h-5 w-5">
                 <Image
                   src={icon_youtube}
                   alt="youtube"
@@ -61,21 +61,25 @@ function Footer() {
                 />
               </div>
             </Link>
-
             <Link
               href="https://www.instagram.com/"
               target="_blank"
               rel="noreferrer"
             >
-              <div className={styles.icon}>
-                <Image src={icon_insta} alt="insta" width={20} height={20} />
+              <div className="h-5 w-5">
+                <Image
+                  src={icon_insta}
+                  alt="instagram"
+                  width={20}
+                  height={20}
+                />
               </div>
             </Link>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

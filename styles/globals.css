@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* 공통 CSS */
 /* 색상 css 변수 */
 :root {
@@ -28,16 +32,16 @@
 }
 
 @font-face {
-  font-family: 'Pretendard-Regular';
-  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
-    format('woff');
+  font-family: "Pretendard-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
   font-weight: 400;
   font-style: normal;
 }
 
 * {
   box-sizing: border-box;
-  font-family: 'Pretendard-Regular';
+  font-family: "Pretendard-Regular";
   color: var(--gray700);
 }
 
@@ -51,97 +55,4 @@ body {
   padding: 0;
   overflow-x: hidden;
   background-color: #fcfcfc;
-}
-
-button {
-  background-color: var(--btn1);
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 42px;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1.5rem;
-}
-
-button:hover {
-  background-color: var(--btn2);
-  cursor: pointer;
-}
-
-#btn_small {
-  border-radius: 0.5rem;
-  padding: 0.5rem 1.5rem;
-  width: 128px;
-  height: 48px;
-  font-size: 16px;
-}
-
-#btn_large {
-  border-radius: 3rem;
-  padding: 0.5rem 1.5rem;
-  width: 355px;
-  height: 56px;
-  font-size: 20px;
-}
-
-#btn_small:hover,
-#btn_large:hover {
-  background-color: var(--btn2);
-  cursor: pointer;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-h1 {
-  font-size: 40px;
-  letter-spacing: 2px;
-}
-
-h2 {
-  font-size: 40px;
-  letter-spacing: 2px;
-}
-
-h3 {
-  font-size: 20px;
-}
-
-footer {
-  background-color: var(--footer);
-  height: 160px;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-}
-
-@media (min-width: 768px) and (max-width: 1199px) {
-  h1 br {
-    display: none !important;
-  }
-  h2 {
-    text-align: center;
-  }
-}
-
-@media (min-width: 375px) and (max-width: 767px) {
-  h1 {
-    font-size: 32px;
-  }
-  h2 {
-    font-size: 32px;
-    text-align: center;
-  }
 }
