@@ -107,21 +107,19 @@ export default function postDetail({ post, postComment }: PostsProps) {
       </div>
       <div className="mb-4 flex items-center gap-2 border-b-2">
         <Image src={icon_profile} alt="프로필" width={24} height={24} />
-        <p className="py-4 text-[14px] text-[var(--gray600)]">
-          {post.writer.nickname}
-        </p>
-        <p className="text-[14px] text-[var(--gray400)]">
+        <p className="py-4 text-[14px] text-gray-600">{post.writer.nickname}</p>
+        <p className="text-[14px] text-gray-400">
           {formatDate(post.createdAt)}
         </p>
         <div className="flex items-center justify-start gap-[0.2rem] border-l-2 pl-4">
           <Image src={icon_favorite} alt="하트" width={16} height={16} />
-          <p className="text-[14px] text-[var(--gray600)]">{post.likeCount}</p>
+          <p className="text-[14px] text-gray-600">{post.likeCount}</p>
         </div>
       </div>
       <div className="flex justify-between">
         <p>{post.content}</p>
         {post.image && (
-          <div className="flex items-center justify-center rounded-[0.3rem] border-[1.5px] border-[var(--gray100)] bg-white p-2">
+          <div className="flex items-center justify-center rounded-[0.3rem] border-[1.5px] border-gray-100 bg-white p-2">
             <Image
               src={post.image}
               width={100}
@@ -138,12 +136,16 @@ export default function postDetail({ post, postComment }: PostsProps) {
           onChange={handleInputChange}
           name="content"
           placeholder="댓글을 입력해주세요"
-          className="w-full resize-none rounded-md border-none bg-[--coolgray100] px-3 py-2 text-sm focus:outline-[--main]"
+          className="bg-coolgray-100 focus:outline-main w-full resize-none rounded-md border-none px-3 py-2 text-sm"
           rows={5}
         />
         <button
           onClick={handlesubmitComment}
-          className={`float-right ml-auto mt-4 block h-[42px] items-center justify-center rounded-[0.5rem] border-none bg-[--btn1] px-6 py-[0.5rem] text-white ${content ? "bg-[--main] hover:bg-[--btn2]" : "cursor-not-allowed bg-gray-300"}`}
+          className={`float-right ml-auto mt-4 block h-[42px] items-center justify-center rounded-[0.5rem] border-none px-6 py-[0.5rem] text-white ${
+            content
+              ? "bg-main hover:bg-btn-2"
+              : "cursor-not-allowed bg-gray-300"
+          }`}
         >
           등록
         </button>
@@ -153,7 +155,7 @@ export default function postDetail({ post, postComment }: PostsProps) {
           postComment.map((comment) => (
             <div
               key={comment.id}
-              className="mb-4 w-full border-b-2 border-b-[var(--gray100)]"
+              className="mb-4 w-full border-b-2 border-b-gray-100"
             >
               <div className="flex items-center justify-between">
                 <div className="mb-4">{comment.content}</div>
@@ -181,10 +183,10 @@ export default function postDetail({ post, postComment }: PostsProps) {
                   />
                 )}
                 <div className="flex flex-col">
-                  <p className="text-[14px] text-[var(--gray600)]">
+                  <p className="text-[14px] text-gray-600">
                     {comment.writer.nickname}
                   </p>
-                  <p className="text-[14px] text-[--gray400]">
+                  <p className="text-[14px] text-gray-400">
                     {displayTime(comment.createdAt)}
                   </p>
                 </div>
@@ -204,7 +206,7 @@ export default function postDetail({ post, postComment }: PostsProps) {
       </div>
       <Link
         href="/boards"
-        className="m-[3rem_auto_0] flex w-[240px] items-center justify-center gap-2 rounded-[5rem] bg-[--main] px-4 py-3 text-[18px] text-white"
+        className="bg-main m-[3rem_auto_0] flex w-[240px] items-center justify-center gap-2 rounded-[5rem] px-4 py-3 text-[18px] text-white"
       >
         목록으로 돌아가기
         <Image src={icon_back} alt="돌아가기" width={24} height={24} />

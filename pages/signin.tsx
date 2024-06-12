@@ -101,12 +101,12 @@ export default function signin() {
               type="email"
               placeholder="이메일을 입력해주세요"
               onChange={handleEmailChange}
-              className={`w-full rounded-xl bg-[--coolgray100] p-4 text-base text-gray-400 focus:outline-[--main] lg:w-[512px] ${
-                emailError ? "border-2 border-red-500" : "border-none"
+              className={`bg-coolgray-100 focus:outline-main w-full rounded-xl p-4 text-base text-gray-400 lg:w-[512px] ${
+                emailError ? "border-error border-2" : "border-none"
               }`}
             />
             {emailError && (
-              <p className="ml-4 text-xs text-red-500">{emailError}</p>
+              <p className="text-error ml-4 text-xs">{emailError}</p>
             )}
           </div>
           <div className="relative my-4 flex w-full flex-col justify-center gap-2 lg:w-auto">
@@ -121,8 +121,8 @@ export default function signin() {
               type={isVisibilityIcon ? "text" : "password"}
               placeholder="비밀번호를 입력해주세요"
               onChange={handlePasswordChange}
-              className={`w-full rounded-xl bg-[--coolgray100] p-4 text-base text-gray-400 focus:outline-[--main] lg:w-[512px] ${
-                passwordError ? "border-2 border-red-500" : "border-none"
+              className={`bg-coolgray-100 focus:outline-main w-full rounded-xl p-4 text-base text-gray-400 lg:w-[512px] ${
+                passwordError ? "border-error border-2" : "border-none"
               }`}
             />
             <Image
@@ -132,13 +132,13 @@ export default function signin() {
               onClick={togglePasswordVisibility}
             />
             {passwordError && (
-              <p className="ml-4 text-xs text-red-500">{passwordError}</p>
+              <p className="text-error ml-4 text-xs">{passwordError}</p>
             )}
           </div>
           <button
             type="submit"
-            className={`w-full cursor-pointer rounded-[5rem] bg-[--btn4] px-5 py-3 text-white lg:w-[512px] ${
-              !isDisabled && "bg-[--main]"
+            className={`bg-btn-4 w-full cursor-pointer rounded-[5rem] px-5 py-3 text-white lg:w-[512px] ${
+              !isDisabled && "bg-main"
             }`}
             disabled={isDisabled}
           >
@@ -147,8 +147,8 @@ export default function signin() {
         </form>
       </div>
       <div className="w-full px-4 lg:w-[512px]">
-        <div className="my-4 flex flex-row items-center justify-between rounded-xl bg-[--loginbg] p-4">
-          <p className="text-main font-semibold">간편 로그인하기</p>
+        <div className="bg-loginbg my-4 flex flex-row items-center justify-between rounded-xl p-4">
+          <p className="text-black">간편 로그인하기</p>
           <div className="flex flex-row gap-4">
             <a href="https://www.google.com/">
               <Image src={iconGoogle} alt="google" className="h-10 w-10" />
@@ -160,7 +160,7 @@ export default function signin() {
         </div>
         <div className="flex flex-row items-center justify-center gap-2">
           <p>판다마켓이 처음이신가요?</p>
-          <Link href="/signup" className="text-[--main] underline">
+          <Link href="/signup" className="text-main underline">
             회원가입
           </Link>
         </div>

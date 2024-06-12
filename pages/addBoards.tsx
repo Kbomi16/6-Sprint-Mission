@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useState } from "react";
+import React, { useState } from "react";
 import FileInput from "../components/FileInput";
 import { useRouter } from "next/router";
 import instance from "@/lib/axios";
@@ -20,11 +20,12 @@ type PostData = {
   image?: string;
 };
 
-function AddItem({
+function AddBoards({
   initialValues = INITIAL_VALUES,
   initialPreview,
 }: AddPostProps) {
   const [values, setValues] = useState<typeof INITIAL_VALUES>(initialValues);
+  const router = useRouter();
 
   const isDisabled = !values.title || !values.content;
 
@@ -34,6 +35,7 @@ function AddItem({
       [name]: value,
     }));
   };
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -41,9 +43,7 @@ function AddItem({
     handleChange(name, value);
   };
 
-  const router = useRouter();
-
-  const handleformSubmit = async () => {
+  const handleFormSubmit = async () => {
     const token = localStorage.getItem("accessToken");
 
     try {
@@ -63,13 +63,11 @@ function AddItem({
         imageUrl = imageResponse.data.url;
       }
 
-      // 이미지가 없을 때도 요청을 보낼 수 있게
       const postData: PostData = {
         title: values.title,
         content: values.content,
       };
 
-      // 이미지 URL이 존재할 경우에만 이미지 데이터 추가
       if (imageUrl) {
         postData.image = imageUrl;
       }
@@ -89,7 +87,7 @@ function AddItem({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    handleformSubmit();
+    await handleFormSubmit();
     alert("게시글 등록이 완료되었습니다!");
     router.push("/boards");
     setValues(INITIAL_VALUES);
@@ -115,7 +113,7 @@ function AddItem({
           value={values.title}
           placeholder="제목을 입력해주세요"
           onChange={handleInputChange}
-          className="my-4 mt-2 w-full rounded-md border-none bg-[--coolgray100] px-3 py-2 text-sm focus:outline-[--main]"
+          className="focus:outline-main my-4 mt-2 w-full rounded-md border-none bg-gray-50 px-3 py-2 text-sm"
         />
         <h4 className="font-semibold">*내용</h4>
         <textarea
@@ -123,7 +121,7 @@ function AddItem({
           value={values.content}
           placeholder="내용을 입력해주세요"
           onChange={handleInputChange}
-          className="my-4 mt-2 w-full resize-none rounded-md border-none bg-[--coolgray100] px-3 py-2 text-sm focus:outline-[--main]"
+          className="focus:outline-main my-4 mt-2 w-full resize-none rounded-md border-none bg-gray-50 px-3 py-2 text-sm"
           rows={5}
         />
         <h4 className="font-semibold">이미지</h4>
@@ -138,4 +136,4 @@ function AddItem({
   );
 }
 
-export default AddItem;
+export default AddBoards;

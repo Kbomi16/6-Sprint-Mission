@@ -11,7 +11,7 @@ import Link from "next/link";
 import Image from "next/image";
 import instance from "@/lib/axios";
 
-export default function signup() {
+export default function Signup() {
   const [email, setEmail] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -145,12 +145,12 @@ export default function signup() {
               type="email"
               placeholder="이메일을 입력해주세요"
               onChange={handleEmailChange}
-              className={`w-full rounded-xl bg-[--coolgray100] p-4 text-base text-gray-400 focus:outline-[--main] lg:w-[512px] ${
-                emailError ? "border-2 border-red-500" : "border-none"
+              className={`bg-coolgray-100 focus:outline-main w-full rounded-xl p-4 text-base text-gray-400 lg:w-[512px] ${
+                emailError ? "border-error border-2" : "border-none"
               }`}
             />
             {emailError && (
-              <p className="errorMessage ml-4 text-xs text-red-500">
+              <p className="errorMessage text-error ml-4 text-xs">
                 {emailError}
               </p>
             )}
@@ -167,12 +167,12 @@ export default function signup() {
               type="text"
               placeholder="닉네임을 입력해주세요"
               onChange={handleNicknameChange}
-              className={`w-full rounded-xl bg-[--coolgray100] p-4 text-base text-gray-400 focus:outline-[--main] lg:w-[512px] ${
-                nicknameError ? "border-2 border-red-500" : "border-none"
+              className={`bg-coolgray-100 focus:outline-main w-full rounded-xl p-4 text-base text-gray-400 lg:w-[512px] ${
+                nicknameError ? "border-error border-2" : "border-none"
               }`}
             />
             {nicknameError && (
-              <p className="errorMessage ml-4 text-xs text-red-500">
+              <p className="errorMessage text-error ml-4 text-xs">
                 {nicknameError}
               </p>
             )}
@@ -189,8 +189,8 @@ export default function signup() {
               placeholder="비밀번호를 입력해주세요"
               id="password"
               onChange={handlePasswordChange}
-              className={`w-full rounded-xl bg-[--coolgray100] p-4 text-base text-gray-400 focus:outline-[--main] lg:w-[512px] ${
-                passwordError ? "border-2 border-red-500" : "border-none"
+              className={`bg-coolgray-100 focus:outline-main w-full rounded-xl p-4 text-base text-gray-400 lg:w-[512px] ${
+                passwordError ? "border-error border-2" : "border-none"
               }`}
             />
             <Image
@@ -200,7 +200,7 @@ export default function signup() {
               onClick={togglePasswordVisibility}
             />
             {passwordError && (
-              <p className="errorMessage ml-4 text-xs text-red-500">
+              <p className="errorMessage text-error ml-4 text-xs">
                 {passwordError}
               </p>
             )}
@@ -217,9 +217,9 @@ export default function signup() {
               placeholder="비밀번호를 다시 한 번 입력해주세요"
               id="confirm_password"
               onChange={handlepasswordConfirmationChange}
-              className={`w-full rounded-xl bg-[--coolgray100] p-4 text-base text-gray-400 focus:outline-[--main] lg:w-[512px] ${
+              className={`bg-coolgray-100 focus:outline-main w-full rounded-xl p-4 text-base text-gray-400 lg:w-[512px] ${
                 passwordConfirmationError
-                  ? "border-2 border-red-500"
+                  ? "border-error border-2"
                   : "border-none"
               }`}
             />
@@ -230,15 +230,15 @@ export default function signup() {
               onClick={togglepasswordConfirmationVisibility}
             />
             {passwordConfirmationError && (
-              <p className="errorMessage ml-4 text-xs text-red-500">
+              <p className="errorMessage text-error ml-4 text-xs">
                 {passwordConfirmationError}
               </p>
             )}
           </div>
           <button
             type="submit"
-            className={`w-full cursor-pointer rounded-[5rem] bg-[--btn4] px-5 py-3 text-white lg:w-[512px] ${
-              !isDisabled && "bg-[--main]"
+            className={`bg-btn-4 w-full cursor-pointer rounded-[5rem] px-5 py-3 text-white lg:w-[512px] ${
+              !isDisabled && "bg-main"
             }`}
             disabled={isDisabled}
           >
@@ -247,8 +247,8 @@ export default function signup() {
         </form>
       </div>
       <div className="w-full px-4 lg:w-[512px]">
-        <div className="my-4 flex flex-row items-center justify-between rounded-xl bg-[--loginbg] p-4">
-          <p className="text-main font-semibold">간편 로그인하기</p>
+        <div className="bg-loginbg my-4 flex flex-row items-center justify-between rounded-xl p-4">
+          <p className="text-black">간편 로그인하기</p>
           <div className="flex flex-row gap-4">
             <Link href="https://www.google.com/">
               <Image src={iconGoogle} alt="google" className="h-10 w-10" />
@@ -260,7 +260,7 @@ export default function signup() {
         </div>
         <div className="flex flex-row items-center justify-center gap-2">
           <p>이미 회원이신가요?</p>
-          <Link href="/signin" className="text-[--main] underline">
+          <Link href="/signin" className="text-main underline">
             로그인
           </Link>
         </div>

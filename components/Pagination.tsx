@@ -24,8 +24,6 @@ export default function Pagination({
   for (let i = 1; i <= totalPages; i++) {
     pages.push(i);
   }
-  // console.log(pages);
-  // console.log(currentPage, totalPages);
 
   return (
     <div className="mt-8 flex items-center justify-center gap-4">
@@ -41,8 +39,8 @@ export default function Pagination({
           <div
             key={i}
             className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-gray-300 font-bold ${
-              currentPage === i ? "bg-[--btn1] text-white" : ""
-            } hover:bg-[--btn1] hover:text-white`}
+              currentPage === i ? "bg-btn-1 text-white" : ""
+            } hover:bg-btn-1 hover:text-white`}
             onClick={() => onPageChange(i)}
           >
             {i}
