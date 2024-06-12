@@ -108,7 +108,7 @@ export default function BestPosts({ initialBestPosts }: BestPostsProps) {
             key={post.id}
           >
             <div className="inline-flex h-[30px] w-[102px] items-center justify-center rounded-b-[5rem] bg-[var(--main)]">
-              <Image src={icon_medal} alt="메달" width={16} height={16} />
+              <Image src={icon_medal} alt="" width={16} height={16} />
               <p className="text-[16px] text-white">Best</p>
             </div>
             <div className="flex h-[80px] items-center justify-between gap-[0.3rem]">
