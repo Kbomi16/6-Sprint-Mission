@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 type PaginationProps = {
   currentPage: number;
@@ -19,11 +19,10 @@ export default function Pagination({
     onPageChange(currentPage + 1);
   };
 
-  const pages = [];
-
-  for (let i = 1; i <= totalPages; i++) {
-    pages.push(i);
-  }
+  const pages = useMemo(
+    () => Array.from({ length: totalPages }, (_, i) => i + 1),
+    [totalPages],
+  );
 
   return (
     <div className="mt-8 flex items-center justify-center gap-4">
