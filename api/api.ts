@@ -1,5 +1,6 @@
 import instance from "@/lib/axios";
 
+// GET
 // 페이지네이션을 위한 전체 게시글 수
 export async function getTotalPosts() {
   try {
@@ -71,5 +72,61 @@ export async function getPostsComments(articleId: string) {
   } catch (error) {
     console.error("getPostsComments 함수에서 오류 발생:", error);
     throw error;
+  }
+}
+
+// POST
+export async function postImages(formData: FormData, token: string) {
+  try {
+    const response = await instance.post("/images/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.url;
+  } catch (error) {
+    console.error("postImages 함수에서 오류 발생:", error);
+  }
+}
+
+type PostData = {
+  title: string;
+  content: string;
+  image?: string;
+};
+
+export async function postArticles(postData: PostData, token: string) {
+  try {
+    const response = await instance.post("/articles", postData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("postArticles 함수에서 오류 발생:", error);
+  }
+}
+
+export async function postArticleComments(
+  articleId: string,
+  content: string,
+  token: string,
+) {
+  try {
+    await instance.post(
+      `/articles/${articleId}/comments`,
+      { content },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    window.location.reload();
+  } catch (error) {
+    console.error("postArticleComments 함수에서 오류 발생:", error);
   }
 }

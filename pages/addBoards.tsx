@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import FileInput from "../components/FileInput";
 import { useRouter } from "next/router";
 import instance from "@/lib/axios";
+import { postArticles, postImages } from "@/api/api";
 
 const INITIAL_VALUES = {
   title: "",
@@ -53,14 +54,10 @@ function AddBoards({
         const formData = new FormData();
         formData.append("image", values.image);
 
-        const imageResponse = await instance.post("/images/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        imageUrl = imageResponse.data.url;
+        if (token !== null) {
+          const imageResponse = await postImages(formData, token);
+          imageUrl = imageResponse;
+        }
       }
 
       const postData: PostData = {
@@ -72,12 +69,9 @@ function AddBoards({
         postData.image = imageUrl;
       }
 
-      await instance.post("/articles", postData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      if (token !== null) {
+        await postArticles(postData, token);
+      }
 
       window.location.reload();
     } catch (error) {
@@ -113,7 +107,7 @@ function AddBoards({
           value={values.title}
           placeholder="제목을 입력해주세요"
           onChange={handleInputChange}
-          className="focus:outline-main my-4 mt-2 w-full rounded-md border-none bg-gray-50 px-3 py-2 text-sm"
+          className="my-4 mt-2 w-full rounded-md border-none bg-gray-50 px-3 py-2 text-sm focus:outline-main"
         />
         <h4 className="font-semibold">*내용</h4>
         <textarea
@@ -121,7 +115,7 @@ function AddBoards({
           value={values.content}
           placeholder="내용을 입력해주세요"
           onChange={handleInputChange}
-          className="focus:outline-main my-4 mt-2 w-full resize-none rounded-md border-none bg-gray-50 px-3 py-2 text-sm"
+          className="my-4 mt-2 w-full resize-none rounded-md border-none bg-gray-50 px-3 py-2 text-sm focus:outline-main"
           rows={5}
         />
         <h4 className="font-semibold">이미지</h4>

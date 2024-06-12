@@ -1,5 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { getPostsComments, getPostsDetail } from "@/api/api";
+import {
+  getPostsComments,
+  getPostsDetail,
+  postArticleComments,
+} from "@/api/api";
 import React, { useState } from "react";
 import icon_optionbar from "@/public/assets/icon_optionbar.png";
 import Image from "next/image";
@@ -81,15 +85,7 @@ export default function postDetail({ post, postComment }: PostsProps) {
     }
 
     try {
-      await instance.post(
-        `/articles/${post.id}/comments`,
-        { content },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      await postArticleComments(post.id.toString(), content, token);
       setContent("");
       window.location.reload();
     } catch (error) {
@@ -136,7 +132,7 @@ export default function postDetail({ post, postComment }: PostsProps) {
           onChange={handleInputChange}
           name="content"
           placeholder="댓글을 입력해주세요"
-          className="bg-coolgray-100 focus:outline-main w-full resize-none rounded-md border-none px-3 py-2 text-sm"
+          className="w-full resize-none rounded-md border-none bg-coolgray-100 px-3 py-2 text-sm focus:outline-main"
           rows={5}
         />
         <button
@@ -206,7 +202,7 @@ export default function postDetail({ post, postComment }: PostsProps) {
       </div>
       <Link
         href="/boards"
-        className="bg-main m-[3rem_auto_0] flex w-[240px] items-center justify-center gap-2 rounded-[5rem] px-4 py-3 text-[18px] text-white"
+        className="m-[3rem_auto_0] flex w-[240px] items-center justify-center gap-2 rounded-[5rem] bg-main px-4 py-3 text-[18px] text-white"
       >
         목록으로 돌아가기
         <Image src={icon_back} alt="돌아가기" width={24} height={24} />
