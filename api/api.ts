@@ -125,7 +125,6 @@ export async function postArticleComments(
         },
       },
     );
-    window.location.reload();
   } catch (error) {
     console.error("postArticleComments 함수에서 오류 발생:", error);
   }
