@@ -57,8 +57,8 @@ export default function Signup() {
       );
       const { accessToken } = response.data;
       localStorage.setItem("accessToken", accessToken);
-      console.log(data);
-      router.push("/");
+      alert("회원가입이 완료되었습니다!");
+      router.push("/signin");
     } catch (error) {
       console.log("데이터 전송 실패", error);
     }
