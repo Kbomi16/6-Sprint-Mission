@@ -21,8 +21,10 @@ export default function Header() {
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    setAccessToken(token);
-  }, []);
+    if (token) {
+      setAccessToken(token);
+    }
+  }, [router.pathname]);
 
   const handleProfileClick = () => {
     setIsLogoutBoxVisible(!isLogoutBoxVisible);
@@ -30,8 +32,8 @@ export default function Header() {
 
   const logout = () => {
     localStorage.removeItem("accessToken");
-    router.push("/");
-    window.location.reload();
+    setAccessToken(null);
+    setIsLogoutBoxVisible(false);
   };
 
   return (
@@ -86,7 +88,7 @@ export default function Header() {
       )}
       {isLogoutBoxVisible && (
         <div className="absolute right-5 top-14 z-50 rounded-lg bg-white px-4 py-2 shadow-md lg:right-12 lg:top-16">
-          <button className="hover:text-main text-gray-700" onClick={logout}>
+          <button className="text-gray-700 hover:text-main" onClick={logout}>
             로그아웃
           </button>
         </div>
@@ -95,7 +97,7 @@ export default function Header() {
         <button
           id="btn_small"
           onClick={goToSignin}
-          className="bg-main hover:bg-btn-2 inline-flex cursor-pointer items-center justify-center rounded-md border-none px-6 py-2 text-white"
+          className="inline-flex cursor-pointer items-center justify-center rounded-md border-none bg-main px-6 py-2 text-white hover:bg-btn-2"
         >
           로그인
         </button>

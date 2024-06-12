@@ -39,9 +39,8 @@ export default function Signin() {
 
       const accessToken = response.data.accessToken;
       localStorage.setItem("accessToken", accessToken);
-
+      alert("로그인 완료!");
       router.push("/");
-      window.location.reload();
     } catch (error) {
       console.log("데이터 전송 실패", error);
     }

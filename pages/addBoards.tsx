@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import FileInput from "../components/FileInput";
 import { useRouter } from "next/router";
-import instance from "@/lib/axios";
 import { postArticles, postImages } from "@/api/api";
 
 const INITIAL_VALUES = {
@@ -72,8 +71,6 @@ function AddBoards({
       if (token !== null) {
         await postArticles(postData, token);
       }
-
-      window.location.reload();
     } catch (error) {
       console.log("데이터 전송 실패", error);
     }
