@@ -50,7 +50,7 @@ instance.interceptors.response.use(
 
         // 새로운 accessToken 요청
         const response = await instance.post("/auth/refresh-token", {
-          token: refreshToken,
+          refreshToken: refreshToken,
         });
         const { accessToken } = response.data;
 
