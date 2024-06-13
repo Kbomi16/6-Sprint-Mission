@@ -32,6 +32,7 @@ export default function Header() {
 
   const logout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     setAccessToken(null);
     setIsLogoutBoxVisible(false);
   };
