@@ -35,6 +35,7 @@ export default function Header() {
     localStorage.removeItem("refreshToken");
     setAccessToken(null);
     setIsLogoutBoxVisible(false);
+    router.push("/");
   };
 
   return (
