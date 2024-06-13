@@ -37,8 +37,10 @@ export default function Signin() {
         password: data.password,
       });
 
-      const accessToken = response.data.accessToken;
+      const { accessToken, refreshToken } = response.data;
       localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
       alert("로그인 완료!");
       router.push("/");
     } catch (error) {
