@@ -12,6 +12,7 @@
 .products-name {
   font-size: 20px;
   flex-grow: 1;
+  font-weight: bold;
 }
 
 .all-products {
