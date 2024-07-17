@@ -11,7 +11,7 @@
 
 .products-name {
   font-size: 20px;
-  flex-grow: 0;
+  flex-grow: 1;
 }
 
 .all-products {
@@ -33,7 +33,6 @@
   position: relative;
 }
 
-
 .all-products-sub-nav button {
   height: 42px !important;
   padding: 0.5rem 1rem !important;
@@ -46,6 +45,8 @@
   height: 42px;
   border-radius: 0.5rem;
   padding: 0.8rem 2.8rem;
+  position: relative;
+  top: -0.7rem;
 }
 
 .search-input:focus {
@@ -56,8 +57,9 @@
   width: 24px;
   height: 24px;
   position: relative;
-  top: 2.1rem;
+  top: 1.4rem;
   left: 1rem;
+  z-index: 10;
 }
 
 .dropdown {
@@ -162,7 +164,8 @@
     align-items: center;
     grid-area: s;
     justify-self: right;
-    width: 30px;
+    width: 40px;
+    padding: 0;
   }
   .valueName {
     display: none;
@@ -171,8 +174,8 @@
     width: 24px;
     height: 24px;
     position: relative;
-    top: 0.5rem;
-    left: 2.5rem;
+    top: 1.4rem;
+    left: 1rem;
   }
   .search-input {
     width: 280px;
@@ -180,6 +183,8 @@
   .dropdown picture img {
     width: 24px;
     height: 24px;
+        margin: 0;
+
   }
   .dropdownMenu {
     width: max-content;
