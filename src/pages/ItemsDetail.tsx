@@ -17,6 +17,8 @@ type ItemData = {
   favoriteCount: number
   tags: string[]
   description: string
+  createdAt: string
+  ownerId: number
 }
 
 type CommentData = {
@@ -62,31 +64,31 @@ function ItemsDetail() {
   }
 
   return (
-    <div className="container mx-auto my-32 flex flex-col items-stretch justify-center px-8">
-      <div className="detail mb-8 flex flex-col items-stretch justify-center md:flex-row md:gap-8">
+    <div className="container mx-auto my-32 flex max-w-[1200px] flex-col items-stretch justify-center px-8">
+      <div className="mb-8 flex flex-col items-stretch justify-center md:flex-row md:justify-between md:gap-8">
         <img
           src={item.images[0]}
           alt={item.name}
           className="h-80 w-80 rounded-lg shadow-sm md:h-96 md:w-96"
         />
-        <div className="detail-description">
-          <div className="detail-nav mb-4 flex items-center justify-between">
-            <p className="detail-name text-2xl font-semibold">{item.name}</p>
+        <div className="flex flex-col gap-1 md:flex-1">
+          <div className="my-4 flex items-center justify-between">
+            <p className="text-2xl font-semibold">{item.name}</p>
             <img src={icon_optionbar} className="h-6 w-6 cursor-pointer"></img>
           </div>
           <h1 className="text-3xl font-bold">
             {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
           </h1>
           <div className="my-4 border-b border-gray-300"></div>
-          <p className="detail-description mb-2 text-sm">상품소개</p>
+          <p className="detail-description mb-2 text-sm font-bold">상품소개</p>
           <p className="description mb-4 text-base">{item.description}</p>
 
-          <p className="detail-tags mb-2 text-sm">상품 태그</p>
-          <div className="tags mb-4 flex flex-wrap gap-4">
+          <p className="mb-2 text-sm font-bold">상품 태그</p>
+          <div className="mb-4 flex flex-wrap gap-4">
             {item.tags.map((tag, index) => (
               <div
                 key={index}
-                className="tag rounded-full bg-gray-50 px-4 py-2 text-gray-800"
+                className="rounded-full bg-gray-50 px-4 py-2 text-gray-800"
               >
                 #{tag}
               </div>
@@ -98,7 +100,7 @@ function ItemsDetail() {
           </div>
         </div>
       </div>
-      <div className="question mb-8 flex flex-col">
+      <div className="mb-8 flex flex-col">
         <div className="mb-4 border-b border-gray-300"></div>
         <h5 className="mb-4 text-lg font-semibold">문의하기</h5>
         <textarea
@@ -109,7 +111,7 @@ function ItemsDetail() {
           rows={5}
         />
         <button
-          className="button-disabled self-end rounded bg-gray-400 px-6 py-2 text-white disabled:opacity-50"
+          className="self-end rounded bg-gray-400 px-6 py-2 text-white disabled:opacity-50"
           disabled
         >
           등록
@@ -118,26 +120,26 @@ function ItemsDetail() {
       {comments.length === 0 ? (
         <CommentNotFound />
       ) : (
-        <div className="comments flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
           {comments.map((comment, index) => (
             <div key={index}>
-              <div className="usernav mb-4 flex items-center justify-between">
+              <div className="mb-4 flex items-center justify-between">
                 <p>{comment.content}</p>
                 <img
                   src={icon_optionbar}
                   className="h-6 w-6 cursor-pointer"
                 ></img>
               </div>
-              <div className="user mb-4 flex items-center gap-4">
+              <div className="mb-4 flex items-center gap-4">
                 <img
                   src={comment.writer.image}
                   className="h-10 w-10 rounded-full"
                 />
-                <div className="user-info flex h-10 flex-col justify-between">
+                <div className="flex h-10 flex-col justify-between">
                   <p className="nickname text-sm font-semibold">
                     {comment.writer.nickname}
                   </p>
-                  <p className="time text-xs text-gray-400">
+                  <p className="text-xs text-gray-400">
                     {displayTime(comment.createdAt)}
                   </p>
                 </div>
@@ -147,9 +149,9 @@ function ItemsDetail() {
           ))}
         </div>
       )}
-      <div className="backtolist mt-12 flex justify-center">
+      <div className="mt-12 flex justify-center">
         <Link to="/items">
-          <button className="back flex items-center justify-center gap-2 rounded-full bg-main px-6 py-3 text-lg text-white">
+          <button className="flex items-center justify-center gap-2 rounded-full bg-main px-6 py-3 text-lg text-white">
             목록으로 돌아가기
             <img src={icon_back} className="h-6 w-6" />
           </button>
