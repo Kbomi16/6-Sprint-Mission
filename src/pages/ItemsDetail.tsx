@@ -2,7 +2,11 @@
 /* eslint-disable jsx-a11y/alt-text */
 import { Link, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { getProductsComments, getProductsDetail } from '../api/api'
+import {
+  getProductsComments,
+  getProductsDetail,
+  postProductsComments,
+} from '../api/api'
 import { CommentNotFound } from '../components'
 import icon_optionbar from '../assets/icon_optionbar.png'
 import icon_back from '../assets/icon_back.png'
@@ -63,6 +67,24 @@ function ItemsDetail() {
     setContent(e.target.value)
   }
 
+  const handleSubmitComment = async () => {
+    const token = localStorage.getItem('accessToken')
+    if (!token) {
+      alert('로그인이 필요합니다.')
+      return
+    }
+
+    try {
+      if (!id) return
+
+      await postProductsComments(id, content, token)
+      setContent('')
+      getProductsComments(id)
+    } catch (error) {
+      console.error('댓글 등록 실패', error)
+    }
+  }
+
   return (
     <div className="container mx-auto my-32 flex max-w-[1200px] flex-col items-stretch justify-center px-8">
       <div className="mb-8 flex flex-col items-stretch justify-center md:flex-row md:justify-between md:gap-8">
@@ -111,8 +133,9 @@ function ItemsDetail() {
           rows={5}
         />
         <button
-          className="self-end rounded bg-gray-400 px-6 py-2 text-white disabled:opacity-50"
-          disabled
+          onClick={handleSubmitComment}
+          className="self-end rounded bg-main px-6 py-2 text-white disabled:bg-gray-400"
+          disabled={!content}
         >
           등록
         </button>
