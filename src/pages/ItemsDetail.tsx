@@ -12,6 +12,7 @@ import icon_optionbar from '../assets/icon_optionbar.png'
 import icon_back from '../assets/icon_back.png'
 import icon_favorite from '../assets/icon_favorite.png'
 import { displayTime } from '../utils/displayTime.ts'
+import { getUsersMe } from '../api/users/index.ts'
 
 type ItemData = {
   id: string
@@ -61,6 +62,15 @@ function ItemsDetail() {
       setComments(data)
     } catch (error) {
       console.error('댓글 가져오기 실패', error)
+    }
+  }
+
+  const fetchMyId = async () => {
+    try {
+      const data = await getUsersMe()
+      console.log(data)
+    } catch (error) {
+      console.error('사용자 id 가져오기 실패', error)
     }
   }
 
