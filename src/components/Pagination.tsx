@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import styles from '../styles/pagination.module.css'
+import { useState } from 'react'
 
 type PaginationProps = {
   productsPerPage: number
@@ -48,11 +47,13 @@ function Pagination({
   return (
     <div>
       <nav>
-        <div className={styles.pagination}>
+        <div className="flex flex-row items-center justify-center gap-4">
           <div
-            className={
-              currentPage === 1 ? styles['disabled'] : styles['page-link']
-            }
+            className={`${
+              currentPage === 1
+                ? 'cursor-not-allowed opacity-50'
+                : 'cursor-pointer'
+            } flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 transition-colors duration-300`}
             onClick={handlePrev}
           >
             {'<'}
@@ -61,22 +62,22 @@ function Pagination({
             <div key={number}>
               <div
                 onClick={() => handleNumClick(number)}
-                className={
+                className={`${
                   number === currentPage
-                    ? styles['page-link-active']
-                    : styles['page-link']
-                }
+                    ? 'bg-main text-white'
+                    : 'text-gray-700'
+                } flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 transition-colors duration-300 hover:bg-main hover:text-white`}
               >
                 {number}
               </div>
             </div>
           ))}
           <div
-            className={
+            className={`${
               currentPage === pageNumbers.length
-                ? styles['disabled']
-                : styles['page-link']
-            }
+                ? 'cursor-not-allowed opacity-50'
+                : 'cursor-pointer'
+            } flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 transition-colors duration-300`}
             onClick={handleNext}
           >
             {'>'}

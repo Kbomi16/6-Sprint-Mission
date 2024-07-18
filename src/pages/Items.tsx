@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from 'react'
-import styles from '../styles/items.module.css'
 import { BestProductList, ProductList, Pagination } from '../components'
 import { getProducts, getBestProducts } from '../api/api'
 import { useNavigate } from 'react-router-dom'
@@ -55,7 +54,7 @@ function Items() {
       return products.sort((a, b) => b.favoriteCount - a.favoriteCount)
     } else {
       return products.sort(
-        (a, b) => +new Date(b.createdAt) - +new Date(a.createdAt)
+        (a, b) => +new Date(b.createdAt) - +new Date(a.createdAt),
       )
     }
   }
@@ -123,7 +122,7 @@ function Items() {
   // 미디어 쿼리 변경 감지를 위한 이벤트 리스너 추가
   const mqlDesktop = window.matchMedia('(min-width: 1200px)')
   const mqlTablet = window.matchMedia(
-    '(min-width: 768px) and (max-width: 1199px)'
+    '(min-width: 768px) and (max-width: 1199px)',
   )
 
   // 페이지당 아이템 개수를 설정하는 함수
@@ -131,8 +130,8 @@ function Items() {
     const screenSize = mqlDesktop.matches
       ? 'desktop'
       : mqlTablet.matches
-      ? 'tablet'
-      : 'mobile'
+        ? 'tablet'
+        : 'mobile'
     const productsPerPage = getProductsPerPage(screenSize)
     const bestProductsPerPage = getBestProductsPerPage(screenSize)
     setProductsPerPage(productsPerPage)
@@ -172,46 +171,66 @@ function Items() {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles['best-products']}>
-        <h3 className={styles['products-name']}>베스트 상품</h3>
+    <div className="container mx-auto my-16 px-8">
+      <div className="mb-8">
+        <h3 className="mb-4 text-xl font-bold">베스트 상품</h3>
         <BestProductList products={bestProducts} />
       </div>
 
       <div>
-        <div className={styles['all-products-nav']}>
-          <div className={styles['all-products-sub-nav']}>
-            <h3 className={styles['products-name']}>전체 상품</h3>
-            <div className={styles.search}>
-              <img src={icon_search} />
-              <input
-                className={styles['search-input']}
-                placeholder="검색할 상품을 입력해주세요"
-                onChange={handleKeywordSearch}
-              ></input>
-            </div>
-            <button id="btn_small" onClick={goToAddItem}>
+        <div className="items-cente mb-4 flex flex-col justify-between gap-4 md:flex-row">
+          <div className="flex justify-between md:flex-1">
+            <h3 className="text-xl font-bold">전체 상품</h3>
+            <button
+              className="ml-4 rounded-md bg-blue-500 px-4 py-2 text-white md:hidden"
+              onClick={goToAddItem}
+            >
               상품 등록하기
             </button>
-            <div className={styles.dropdown} onClick={toggleDropdown}>
-              <picture>
-                <source
-                  srcSet={icon_order}
-                  media="all and (max-width: 768px)"
-                />
-                <span className={styles.valueName}>
-                  {
-                    selectOptions.find((option) => option.value === order)
-                      ?.label
-                  }
-                </span>
-                <img src={icon_dropdown} />
-              </picture>
+          </div>
+          <div className="flex items-center justify-between md:flex">
+            <div className="relative">
+              <input
+                className="rounded-md border py-2 pl-8 pr-4 focus:outline-none"
+                placeholder="검색할 상품을 입력해주세요"
+                onChange={handleKeywordSearch}
+              />
+              <img
+                src={icon_search}
+                className="absolute left-2 top-2 h-6 w-6"
+              />
+            </div>
+            <button
+              className="hidden hover:bg-blue-600 md:ml-4 md:block md:rounded-md md:bg-blue-500 md:px-4 md:py-2 md:text-white"
+              onClick={goToAddItem}
+            >
+              상품 등록하기
+            </button>
+            <div className="relative ml-4">
+              <div
+                className="flex cursor-pointer items-center rounded-lg border p-1 md:px-3 md:py-2"
+                onClick={toggleDropdown}
+              >
+                <picture className="flex flex-row items-center justify-center">
+                  <source
+                    srcSet={icon_order}
+                    media="all and (max-width: 768px)"
+                  />
+                  <span className="hidden md:block">
+                    {
+                      selectOptions.find((option) => option.value === order)
+                        ?.label
+                    }
+                  </span>
+                  <img src={icon_dropdown} className="h-8 w-8 md:h-6 md:w-6" />
+                </picture>
+              </div>
               {isDropdownView && (
-                <ul className={styles.dropdownMenu}>
+                <ul className="absolute right-0 z-10 mt-2 w-40 rounded-md border bg-white text-center shadow-lg md:w-fit">
                   {selectOptions.map((option) => (
                     <li
                       key={option.value}
+                      className="cursor-pointer px-4 py-2 hover:bg-gray-100"
                       onClick={() => selectOption(option.value)}
                     >
                       {option.label}

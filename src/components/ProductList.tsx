@@ -1,7 +1,4 @@
-/* eslint-disable jsx-a11y/alt-text */
-import styles from '../styles/productList.module.css'
 import { Link } from 'react-router-dom'
-
 import icon_favorite from '../assets/icon_favorite.png'
 
 type Products = {
@@ -18,27 +15,26 @@ type ProductsProps = {
 
 function ProductList({ products }: ProductsProps) {
   return (
-    <div className={styles.products}>
-      {/* products는 map을 통해 배열 내의 각 상품을 순회하면서 상품 정보 렌더링 */}
+    <div className="mb-8 grid h-[45rem] grid-cols-2 items-center justify-items-center gap-4 md:h-auto md:grid-cols-3 lg:grid-cols-5">
       {products.map((product) => (
         <Link
           key={product.id}
-          className={styles.product}
+          className="flex flex-col items-center justify-center gap-2"
           to={`/items/${product.id}`}
         >
           <img
             src={product.images[0]}
             alt={product.name}
-            className={styles['product-img']}
+            className="h-[168px] w-[168px] rounded-lg md:h-[221px] md:w-[221px]"
           />
-          <div className={styles.name}>{product.name}</div>
-          <div className={styles.price}>
-            {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-          </div>
-          <div className={styles.favoritecount}>
-            <img src={icon_favorite}></img>
-            <div className={styles['favoritecount-number']}>
-              {product.favoriteCount}
+          <div className="float-start flex w-full flex-col items-start justify-start">
+            <div className="text-sm">{product.name}</div>
+            <div className="text-lg font-bold">
+              {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            </div>
+            <div className="flex items-center gap-1">
+              <img src={icon_favorite} className="h-4 w-4 cursor-pointer" />
+              <div className="text-xs">{product.favoriteCount}</div>
             </div>
           </div>
         </Link>
