@@ -102,7 +102,8 @@ function AddItem({
         postData.images = imageUrl
       }
       if (token !== null) {
-        await postProducts(postData)
+        const response = await postProducts(postData)
+        return response.id
       }
     } catch (error) {
       console.log('데이터 전송 실패', error)
@@ -113,9 +114,9 @@ function AddItem({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await handleFormSubmit()
+    const productId = await handleFormSubmit()
     alert('상품 등록이 완료되었습니다!')
-    navigate('/items')
+    navigate(`/items/${productId}`)
     setValues(INITIAL_VALUES)
   }
 
