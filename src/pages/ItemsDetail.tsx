@@ -44,19 +44,29 @@ function ItemsDetail() {
   const [content, setContent] = useState('')
   const [comments, setComments] = useState<CommentData | null>(null)
 
-  const fetchData = async (id: string) => {
-    const [itemData, commentsData] = await Promise.all([
-      getProductsDetail(id),
-      getProductsComments(id),
-    ])
-    setItem(itemData)
-    setComments(commentsData)
+  const fetchProductDetail = async () => {
+    try {
+      if (!id) return
+      const data = await getProductsDetail(id)
+      setItem(data)
+    } catch (error) {
+      console.error('상품 가져오기 실패', error)
+    }
+  }
+
+  const fetchProductComments = async () => {
+    try {
+      if (!id) return
+      const data = await getProductsComments(id)
+      setComments(data)
+    } catch (error) {
+      console.error('댓글 가져오기 실패', error)
+    }
   }
 
   useEffect(() => {
-    if (id !== undefined) {
-      fetchData(id)
-    }
+    fetchProductDetail()
+    fetchProductComments()
   }, [id])
 
   if (!item || !comments) {
@@ -79,7 +89,7 @@ function ItemsDetail() {
 
       await postProductsComments(id, content, token)
       setContent('')
-      getProductsComments(id)
+      fetchProductComments()
     } catch (error) {
       console.error('댓글 등록 실패', error)
     }
