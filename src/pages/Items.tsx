@@ -88,7 +88,7 @@ function Items() {
       }
     }
     fetchBestProducts()
-  })
+  }, [])
 
   // 반응형에 따라 보여지는 상품의 개수
   // 전체 상품

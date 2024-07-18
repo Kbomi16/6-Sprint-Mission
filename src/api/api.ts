@@ -38,15 +38,18 @@ export async function getProductsComments(id: string) {
   return data.list
 }
 
+type PostProductData = {
+  name: string
+  description: string
+  price: number
+  tags: string[]
+  images?: string
+}
+
 // 게시글 등록
-export async function postProducts(postData: PostData, token: string) {
+export async function postProducts(postData: PostProductData) {
   try {
-    const response = await instance.post('/products', postData, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const response = await instance.post('/products', postData)
     return response.data
   } catch (error) {
     console.error('postProducts 함수에서 오류 발생:', error)
@@ -152,17 +155,15 @@ export async function getPostsComments(articleId: string) {
 }
 
 // 이미지 POST
-export async function postImages(formData: FormData, token: string) {
+export async function postImages(formData: FormData) {
   try {
-    const response = await instance.post('/images/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const response = await instance.post('/images/upload', formData)
+    console.log(formData)
+    console.log(response.data.url)
     return response.data.url
   } catch (error) {
     console.error('postImages 함수에서 오류 발생:', error)
+    throw error
   }
 }
 
@@ -173,14 +174,9 @@ type PostData = {
 }
 
 // 게시글 등록
-export async function postArticles(postData: PostData, token: string) {
+export async function postArticles(postData: PostData) {
   try {
-    const response = await instance.post('/articles', postData, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const response = await instance.post('/articles', postData)
     return response.data
   } catch (error) {
     console.error('postArticles 함수에서 오류 발생:', error)

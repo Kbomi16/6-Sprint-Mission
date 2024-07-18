@@ -12,7 +12,9 @@ instance.interceptors.request.use(
 
     // accessToken이 존재하는 경우, 헤더에 추가
     if (accessToken) {
-      config.headers['Content-Type'] = 'application/json'
+      config.url?.includes('upload')
+        ? (config.headers['Content-Type'] = 'multipart/form-data')
+        : (config.headers['Content-Type'] = 'application/json')
       config.headers['Authorization'] = `Bearer ${accessToken}`
     }
 
@@ -21,7 +23,7 @@ instance.interceptors.request.use(
   (error) => {
     // 요청 에러 처리
     return Promise.reject(error)
-  }
+  },
 )
 
 // 응답 인터셉터 설정
@@ -58,9 +60,8 @@ instance.interceptors.response.use(
         localStorage.setItem('accessToken', accessToken)
 
         // 새로운 accessToken으로 헤더 업데이트
-        instance.defaults.headers.common[
-          'Authorization'
-        ] = `Bearer ${accessToken}`
+        instance.defaults.headers.common['Authorization'] =
+          `Bearer ${accessToken}`
         originalRequest.headers['Authorization'] = `Bearer ${accessToken}`
 
         // 새로운 토큰으로 원래 요청 재시도
@@ -71,7 +72,7 @@ instance.interceptors.response.use(
     }
     alert(`ERROR: ${error.response.data.message}`)
     return Promise.reject(error)
-  }
+  },
 )
 
 export default instance
