@@ -1,20 +1,27 @@
 import instance from '../lib/axios'
 import axiosGetInstance from '../lib/axiosGetInstance'
 
+// 모든 상품
 export async function getProducts({
   page = 1,
   pageSize = 100,
   order = '',
   keyword = '',
 }) {
-  const query = `page=${page}&pageSize=${pageSize}&order=${order}&keyword=${keyword}`
-  const { data } = await instance.get(`/products?${query}`)
+  const params = new URLSearchParams({
+    page: page.toString(),
+    pageSize: pageSize.toString(),
+    order,
+    keyword,
+  })
+  const { data } = await instance.get(`/products?${params.toString()}`)
   return data.list
 }
 
 // 베스트 상품
 export async function getBestProducts() {
-  const { data } = await instance.get(`/products?orderBy=favorite`)
+  const params = new URLSearchParams({ orderBy: 'favorite' })
+  const { data } = await instance.get(`/products?${params.toString()}`)
   return data
 }
 
@@ -24,19 +31,53 @@ export async function getProductsDetail(id: string) {
 }
 
 export async function getProductsComments(id: string) {
-  const { data } = await instance.get(`/products/${id}/comments?limit=5`)
+  const params = new URLSearchParams({ limit: '5' })
+  const { data } = await instance.get(
+    `/products/${id}/comments?${params.toString()}`,
+  )
   return data.list
 }
 
-// GET
+// 게시글 등록
+export async function postProducts(postData: PostData, token: string) {
+  try {
+    const response = await instance.post('/products', postData, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error('postProducts 함수에서 오류 발생:', error)
+  }
+}
+
+// 댓글 등록
+export async function postProductsComments(
+  productId: string,
+  content: string,
+  token: string,
+) {
+  try {
+    await instance.post(
+      `/products/${productId}/comments`,
+      { content },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+  } catch (error) {
+    console.error('postProductsComments 함수에서 오류 발생:', error)
+  }
+}
+
 // 페이지네이션을 위한 전체 게시글 수
 export async function getTotalPosts() {
   try {
-    const params = new URLSearchParams({
-      pageSize: '10000',
-      orderBy: 'recent',
-    })
-
+    const params = new URLSearchParams({ pageSize: '10000', orderBy: 'recent' })
     const { data } = await axiosGetInstance.get('/articles?', { params })
     return data.list.length
   } catch (error) {
@@ -59,7 +100,7 @@ export async function getPosts({
       pageSize: pageSize.toString(),
     })
     const { data } = await axiosGetInstance.get(
-      `/articles?${params.toString()}`
+      `/articles?${params.toString()}`,
     )
     return data.list
   } catch (error) {
@@ -68,15 +109,15 @@ export async function getPosts({
   }
 }
 
+// 베스트 게시글
 export async function getBestPosts({ pageSize = 3 }) {
   try {
-    const params = new URLSearchParams({ orderBy: 'like' })
-
+    const params = new URLSearchParams({
+      orderBy: 'like',
+      pageSize: pageSize.toString(),
+    })
     const { data } = await axiosGetInstance.get(
-      `/articles?&pageSize=${pageSize}`,
-      {
-        params,
-      }
+      `/articles?${params.toString()}`,
     )
     return data.list
   } catch (error) {
@@ -85,6 +126,7 @@ export async function getBestPosts({ pageSize = 3 }) {
   }
 }
 
+// 게시글 상세
 export async function getPostsDetail(articleId: string) {
   try {
     const { data } = await axiosGetInstance.get(`/articles/${articleId}`)
@@ -95,14 +137,12 @@ export async function getPostsDetail(articleId: string) {
   }
 }
 
+// 게시글 댓글
 export async function getPostsComments(articleId: string) {
   try {
     const params = new URLSearchParams({ limit: '100' })
     const { data } = await axiosGetInstance.get(
-      `/articles/${articleId}/comments?`,
-      {
-        params,
-      }
+      `/articles/${articleId}/comments?${params.toString()}`,
     )
     return data.list
   } catch (error) {
@@ -111,7 +151,7 @@ export async function getPostsComments(articleId: string) {
   }
 }
 
-// POST
+// 이미지 POST
 export async function postImages(formData: FormData, token: string) {
   try {
     const response = await instance.post('/images/upload', formData, {
@@ -132,6 +172,7 @@ type PostData = {
   image?: string
 }
 
+// 게시글 등록
 export async function postArticles(postData: PostData, token: string) {
   try {
     const response = await instance.post('/articles', postData, {
@@ -146,10 +187,11 @@ export async function postArticles(postData: PostData, token: string) {
   }
 }
 
+// 댓글 등록
 export async function postArticleComments(
   articleId: string,
   content: string,
-  token: string
+  token: string,
 ) {
   try {
     await instance.post(
@@ -159,7 +201,7 @@ export async function postArticleComments(
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     )
   } catch (error) {
     console.error('postArticleComments 함수에서 오류 발생:', error)
