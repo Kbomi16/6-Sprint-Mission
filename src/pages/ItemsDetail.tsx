@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {
   getProductsComments,
   getProductsDetail,
@@ -13,6 +13,7 @@ import icon_profile from '../assets/icon_profile.png'
 import { displayTime } from '../utils/displayTime.ts'
 import { getUsersMe } from '../api/users/index.ts'
 import ItemCard from '../components/item/ItemCard.tsx'
+import icon_back from '../assets/icon_back.png'
 
 type ItemData = {
   id: number
@@ -247,6 +248,13 @@ function ItemsDetail() {
           ))}
         </div>
       )}
+      <Link
+        to="/boards"
+        className="m-[3rem_auto_0] flex w-[240px] items-center justify-center gap-2 rounded-[5rem] bg-main px-4 py-3 text-[18px] text-white hover:bg-btn-2"
+      >
+        목록으로 돌아가기
+        <img src={icon_back} alt="돌아가기" width={24} height={24} />
+      </Link>
     </div>
   )
 }
