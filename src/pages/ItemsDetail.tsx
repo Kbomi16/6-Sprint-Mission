@@ -10,12 +10,12 @@ import {
 import { CommentNotFound } from '../components'
 import icon_optionbar from '../assets/icon_optionbar.png'
 import icon_profile from '../assets/icon_profile.png'
-import icon_favorite from '../assets/icon_favorite.png'
 import { displayTime } from '../utils/displayTime.ts'
 import { getUsersMe } from '../api/users/index.ts'
+import ItemCard from '../components/item/ItemCard.tsx'
 
 type ItemData = {
-  id: string
+  id: number
   name: string
   images: string[]
   price: number
@@ -27,6 +27,7 @@ type ItemData = {
 }
 
 type CommentData = {
+  id: number
   map(
     arg0: (comment: any, index: any) => import('react/jsx-runtime').JSX.Element,
   ): import('react').ReactNode
@@ -44,7 +45,7 @@ function ItemsDetail() {
   const { id } = useParams<{ id: string }>()
   const [item, setItem] = useState<ItemData | null>(null)
   const [content, setContent] = useState('')
-  const [comments, setComments] = useState<CommentData | null>(null)
+  const [comments, setComments] = useState<CommentData[]>([])
   const [myId, setMyId] = useState<number | null>(null)
   const [selectedComment, setSelectedComment] = useState<number | null>(null)
   const [editingComment, setEditingComment] = useState<number | null>(null)
@@ -121,7 +122,7 @@ function ItemsDetail() {
     setEditContent(currentContent)
   }
 
-  const handleDeleteComment = async (commentId: string) => {
+  const handleDeleteComment = async (commentId: number) => {
     try {
       await deleteComments(commentId)
       fetchProductComments()
@@ -130,7 +131,7 @@ function ItemsDetail() {
     }
   }
 
-  const handleSaveEdit = async (commentId: string) => {
+  const handleSaveEdit = async (commentId: number) => {
     try {
       await patchComments(commentId, editContent)
       setEditingComment(null)
@@ -143,41 +144,7 @@ function ItemsDetail() {
 
   return (
     <div className="container mx-auto my-32 flex max-w-[1200px] flex-col items-stretch justify-center px-8">
-      <div className="mb-8 flex flex-col items-stretch justify-center md:flex-row md:justify-between md:gap-8">
-        <img
-          src={item.images[0]}
-          alt={item.name}
-          className="h-80 w-80 rounded-lg shadow-sm md:h-96 md:w-96"
-        />
-        <div className="flex flex-col gap-1 md:flex-1">
-          <div className="my-4 flex items-center justify-between">
-            <p className="text-2xl font-semibold">{item.name}</p>
-            <img src={icon_optionbar} className="h-6 w-6 cursor-pointer"></img>
-          </div>
-          <h1 className="text-3xl font-bold">
-            {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
-          </h1>
-          <div className="my-4 border-b border-gray-300"></div>
-          <p className="detail-description mb-2 text-sm font-bold">상품소개</p>
-          <p className="description mb-4 text-base">{item.description}</p>
-
-          <p className="mb-2 text-sm font-bold">상품 태그</p>
-          <div className="mb-4 flex flex-wrap gap-4">
-            {item.tags.map((tag, index) => (
-              <div
-                key={index}
-                className="rounded-full bg-gray-50 px-4 py-2 text-gray-800"
-              >
-                #{tag}
-              </div>
-            ))}
-          </div>
-          <div className="favoriteCount flex w-fit cursor-pointer items-center gap-2 rounded-full border bg-white px-4 py-2 text-gray-800">
-            <img src={icon_favorite} className="h-6 w-6" />
-            {item.favoriteCount}
-          </div>
-        </div>
-      </div>
+      <ItemCard item={item} myId={myId} comments={[]} />
       <div className="mb-8 flex flex-col">
         <div className="mb-4 border-b border-gray-300"></div>
         <h5 className="mb-4 text-lg font-semibold">문의하기</h5>

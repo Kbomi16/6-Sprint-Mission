@@ -77,6 +77,24 @@ export async function postProductsComments(
   }
 }
 
+// 상품 수정
+export async function patchProducts(productId: number, content: string) {
+  try {
+    await instance.patch(`/products/${productId}`, { content })
+  } catch (error) {
+    console.error('patchProducts 함수에서 오류 발생:', error)
+  }
+}
+
+// 상품 삭제
+export async function deleteProducts(productId: number) {
+  try {
+    await instance.delete(`/products/${productId}`)
+  } catch (error) {
+    console.error('deleteProducts 함수에서 오류 발생:', error)
+  }
+}
+
 // 페이지네이션을 위한 전체 게시글 수
 export async function getTotalPosts() {
   try {
@@ -193,7 +211,7 @@ export async function postArticleComments(articleId: string, content: string) {
 }
 
 // 댓글 수정
-export async function patchComments(commentId: string, content: string) {
+export async function patchComments(commentId: number, content: string) {
   try {
     await instance.patch(`/comments/${commentId}`, { content })
   } catch (error) {
@@ -202,7 +220,7 @@ export async function patchComments(commentId: string, content: string) {
 }
 
 // 댓글 삭제
-export async function deleteComments(commentId: string) {
+export async function deleteComments(commentId: number) {
   try {
     await instance.delete(`/comments/${commentId}`)
   } catch (error) {
