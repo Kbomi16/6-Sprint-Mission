@@ -12,10 +12,13 @@ import './styles/globals.css'
 import PostDetail from './pages/PostDetail.tsx'
 import Boards from './pages/Boards.tsx'
 import AddBoards from './pages/AddBoards.tsx'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -36,7 +39,7 @@ function App() {
           <Route path="signup" element={<Signup />} />
         </Routes>
       </BrowserRouter>
-    </>
+    </QueryClientProvider>
   )
 }
 
