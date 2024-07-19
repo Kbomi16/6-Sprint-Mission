@@ -249,7 +249,7 @@ function ItemsDetail() {
         </div>
       )}
       <Link
-        to="/boards"
+        to="/items"
         className="m-[3rem_auto_0] flex w-[240px] items-center justify-center gap-2 rounded-[5rem] bg-main px-4 py-3 text-[18px] text-white hover:bg-btn-2"
       >
         목록으로 돌아가기
