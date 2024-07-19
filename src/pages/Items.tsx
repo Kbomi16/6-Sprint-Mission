@@ -3,14 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { BestProductList, ProductList, Pagination } from '../components'
 import { getProducts, getBestProducts } from '../api/api'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 
 import icon_search from '../assets/icon_search.png'
 import icon_order from '../assets/icon_order.png'
 import icon_dropdown from '../assets/icon_dropdown.png'
 
 type Products = {
-  sort(arg0: (a: any, b: any) => number): unknown
-  slice(indexOfFirst: number, indexOfLast: number): number
   id: string
   name: string
   images: string[]
@@ -25,31 +24,19 @@ function Items() {
     { value: 'favoriteCount', label: '좋아요순' },
   ]
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [products, setProducts] = useState([])
-  const [bestProducts, setBestProducts] = useState([])
   const [order, setOrder] = useState(selectOptions[0].value)
   const [keyword, setKeyword] = useState('')
-
   const [currentPage, setCurrentPage] = useState(1)
-
-  const [productsPerPage, setProductsPerPage] = useState(10) // 한 페이지에 보여질 상품 수는 10개로 초기화
+  const [productsPerPage, setProductsPerPage] = useState(10)
   const [bestProductsPerPage, setBestProductsPerPage] = useState(4)
-
   const [isDropdownView, setDropdownView] = useState(false)
-
-  // 처음과 끝 인덱스 번호를 구하고 slice로 분할하기
-  const indexOfLast = currentPage * productsPerPage // 현재 페이지의 마지막 상품 인덱스
-  const indexOfFirst = indexOfLast - productsPerPage // 현재 페이지의 첫 번째 상품 인덱스
-
-  const currentProducts = products.slice(indexOfFirst, indexOfLast)
 
   const navigate = useNavigate()
   const goToAddItem = () => {
     navigate('/additem')
   }
 
-  const sortProducts = (products: Products, order: string) => {
+  const sortProducts = (products: Products[], order: string) => {
     if (order === 'favoriteCount') {
       return products.sort((a, b) => b.favoriteCount - a.favoriteCount)
     } else {
@@ -59,36 +46,23 @@ function Items() {
     }
   }
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true)
-        let fetchedProducts = await getProducts({ keyword })
-        fetchedProducts = sortProducts(fetchedProducts, order)
-        setProducts(fetchedProducts)
-      } catch (error) {
-        console.error('상품 가져오는데 실패했습니다', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
+  const { data: products = [], refetch: refetchProducts } = useQuery({
+    queryKey: ['products', order, keyword], //order와 keyword가 변경될 때마다 쿼리가 다시 실행
+    queryFn: async () => {
+      const fetchedProducts = await getProducts({ keyword })
+      return sortProducts(fetchedProducts, order)
+    },
+  })
 
-    fetchProducts()
-  }, [order, keyword])
-
-  useEffect(() => {
-    const fetchBestProducts = async () => {
-      try {
-        const bestProducts = await getBestProducts()
-        const screenSize = handleMediaQueryChange()
-        const bestProductsCount = getBestProductsPerPage(screenSize)
-        setBestProducts(bestProducts.list.slice(0, bestProductsCount))
-      } catch (error) {
-        console.error('베스트 상품 가져오는데 실패했습니다', error)
-      }
-    }
-    fetchBestProducts()
-  }, [])
+  const { data: bestProducts = [] } = useQuery({
+    queryKey: ['bestProducts'],
+    queryFn: async () => {
+      const response = await getBestProducts()
+      const screenSize = handleMediaQueryChange()
+      const bestProductsCount = getBestProductsPerPage(screenSize)
+      return response.list.slice(0, bestProductsCount)
+    },
+  })
 
   // 반응형에 따라 보여지는 상품의 개수
   // 전체 상품
@@ -155,6 +129,10 @@ function Items() {
     }
   }, [])
 
+  useEffect(() => {
+    refetchProducts()
+  }, [order, keyword, refetchProducts])
+
   const handleKeywordSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value)
   }
@@ -169,6 +147,11 @@ function Items() {
     setOrder(value)
     setDropdownView(false) // 옵션 선택 후 드롭다운 닫기
   }
+
+  // 처음과 끝 인덱스 번호를 구하고 slice로 분할하기
+  const indexOfLast = currentPage * productsPerPage // 현재 페이지의 마지막 상품 인덱스
+  const indexOfFirst = indexOfLast - productsPerPage // 현재 페이지의 첫 번째 상품 인덱스
+  const currentProducts = products.slice(indexOfFirst, indexOfLast)
 
   return (
     <div className="container mx-auto my-16 px-8">
