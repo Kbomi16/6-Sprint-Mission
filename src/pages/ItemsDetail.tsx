@@ -1,15 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable jsx-a11y/alt-text */
-import { Link, useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import {
   getProductsComments,
   getProductsDetail,
   postProductsComments,
+  patchComments,
+  deleteComments,
 } from '../api/api'
 import { CommentNotFound } from '../components'
 import icon_optionbar from '../assets/icon_optionbar.png'
-import icon_back from '../assets/icon_back.png'
+import icon_profile from '../assets/icon_profile.png'
 import icon_favorite from '../assets/icon_favorite.png'
 import { displayTime } from '../utils/displayTime.ts'
 import { getUsersMe } from '../api/users/index.ts'
@@ -45,8 +45,10 @@ function ItemsDetail() {
   const [item, setItem] = useState<ItemData | null>(null)
   const [content, setContent] = useState('')
   const [comments, setComments] = useState<CommentData | null>(null)
-  const [myId, setMyId] = useState()
-  const [isOptionBoxVisible, setIsOptionBoxVisible] = useState(false)
+  const [myId, setMyId] = useState<number | null>(null)
+  const [selectedComment, setSelectedComment] = useState<number | null>(null)
+  const [editingComment, setEditingComment] = useState<number | null>(null)
+  const [editContent, setEditContent] = useState('')
 
   const fetchProductDetail = async () => {
     try {
@@ -110,13 +112,34 @@ function ItemsDetail() {
     }
   }
 
-  const handleOptionClick = () => {
-    setIsOptionBoxVisible((prev) => !prev)
+  const handleOptionClick = (commentIndex: number) => {
+    setSelectedComment((prev) => (prev === commentIndex ? null : commentIndex))
   }
 
-  const handleEditComment = () => {}
+  const handleEditComment = (commentIndex: number, currentContent: string) => {
+    setEditingComment(commentIndex)
+    setEditContent(currentContent)
+  }
 
-  const handleDeleteComment = () => {}
+  const handleDeleteComment = async (commentId: string) => {
+    try {
+      await deleteComments(commentId)
+      fetchProductComments()
+    } catch (error) {
+      console.error('댓글 삭제 실패', error)
+    }
+  }
+
+  const handleSaveEdit = async (commentId: string) => {
+    try {
+      await patchComments(commentId, editContent)
+      setEditingComment(null)
+      setEditContent('')
+      fetchProductComments()
+    } catch (error) {
+      console.error('댓글 수정 실패', error)
+    }
+  }
 
   return (
     <div className="container mx-auto my-32 flex max-w-[1200px] flex-col items-stretch justify-center px-8">
@@ -179,57 +202,84 @@ function ItemsDetail() {
         <div className="flex flex-col gap-4">
           {comments.map((comment, index) => (
             <div key={index}>
-              <div className="relative mb-4 flex items-center justify-between">
-                <p>{comment.content}</p>
-                <img
-                  src={icon_optionbar}
-                  className="h-6 w-6 cursor-pointer"
-                  onClick={handleOptionClick}
-                ></img>
-                {isOptionBoxVisible && myId === comment.writer.id && (
-                  <div className="absolute right-0 top-5 z-50 flex flex-col gap-1 rounded-xl bg-white shadow-md">
-                    <div
-                      onClick={handleEditComment}
-                      className="w-full cursor-pointer rounded-t-xl px-4 py-2 hover:bg-gray-100"
-                    >
-                      수정
-                    </div>
-                    <div
-                      onClick={handleDeleteComment}
-                      className="w-full cursor-pointer rounded-b-xl px-4 py-2 hover:bg-gray-100"
-                    >
-                      삭제
-                    </div>
-                  </div>
+              <div className="relative flex items-center justify-between">
+                {editingComment === index ? (
+                  <textarea
+                    value={editContent}
+                    onChange={(e) => setEditContent(e.target.value)}
+                    className="mb-4 w-full resize-none rounded-md border-none bg-coolgray-100 px-3 py-2 text-sm focus:outline-main"
+                  />
+                ) : (
+                  <p>{comment.content}</p>
                 )}
+                {myId === comment.writer.id && (
+                  <img
+                    src={icon_optionbar}
+                    className="h-6 w-6 cursor-pointer"
+                    onClick={() => handleOptionClick(index)}
+                  />
+                )}
+
+                {selectedComment === index &&
+                  editingComment !== index &&
+                  myId === comment.writer.id && (
+                    <div className="absolute right-0 top-5 z-50 flex flex-col gap-1 rounded-xl bg-white shadow-md">
+                      <div
+                        onClick={() =>
+                          handleEditComment(index, comment.content)
+                        }
+                        className="w-full cursor-pointer rounded-t-xl px-4 py-2 hover:bg-gray-100"
+                      >
+                        수정하기
+                      </div>
+                      <div
+                        onClick={() => handleDeleteComment(comment.id)}
+                        className="w-full cursor-pointer rounded-b-xl px-4 py-2 hover:bg-gray-100"
+                      >
+                        삭제하기
+                      </div>
+                    </div>
+                  )}
               </div>
-              <div className="mb-4 flex items-center gap-4">
+              {editingComment === index && (
+                <div className="flex justify-end gap-2">
+                  <button
+                    onClick={() => {
+                      setEditingComment(null)
+                      setEditContent('')
+                    }}
+                    className="rounded bg-gray-300 p-2 text-xs text-white"
+                  >
+                    취소
+                  </button>
+                  <button
+                    onClick={() => handleSaveEdit(comment.id)}
+                    className="rounded bg-main p-2 text-xs text-white"
+                  >
+                    수정 완료
+                  </button>
+                </div>
+              )}
+              <div className="my-2 flex gap-4">
                 <img
-                  src={comment.writer.image}
-                  className="h-10 w-10 rounded-full"
+                  src={comment.writer.image || icon_profile}
+                  alt="프로필"
+                  width={42}
+                  height={42}
                 />
-                <div className="flex h-10 flex-col justify-between">
-                  <p className="nickname text-sm font-semibold">
+                <div className="flex flex-col">
+                  <p className="text-[14px] text-gray-600">
                     {comment.writer.nickname}
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-[14px] text-gray-400">
                     {displayTime(comment.createdAt)}
                   </p>
                 </div>
               </div>
-              <div className="border-b border-gray-300"></div>
             </div>
           ))}
         </div>
       )}
-      <div className="mt-12 flex justify-center">
-        <Link to="/items">
-          <button className="flex items-center justify-center gap-2 rounded-full bg-main px-6 py-3 text-lg text-white">
-            목록으로 돌아가기
-            <img src={icon_back} className="h-6 w-6" />
-          </button>
-        </Link>
-      </div>
     </div>
   )
 }

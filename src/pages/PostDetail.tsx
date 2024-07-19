@@ -82,7 +82,7 @@ export default function PostDetail() {
     try {
       if (!id) return
 
-      await postArticleComments(id, content, token)
+      await postArticleComments(id, content)
       setContent('')
       fetchPostsComments()
     } catch (error) {

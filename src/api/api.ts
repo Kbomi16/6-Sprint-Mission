@@ -184,22 +184,28 @@ export async function postArticles(postData: PostData) {
 }
 
 // 댓글 등록
-export async function postArticleComments(
-  articleId: string,
-  content: string,
-  token: string,
-) {
+export async function postArticleComments(articleId: string, content: string) {
   try {
-    await instance.post(
-      `/articles/${articleId}/comments`,
-      { content },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    )
+    await instance.post(`/articles/${articleId}/comments`, { content })
   } catch (error) {
     console.error('postArticleComments 함수에서 오류 발생:', error)
+  }
+}
+
+// 댓글 수정
+export async function patchComments(commentId: string, content: string) {
+  try {
+    await instance.patch(`/comments/${commentId}`, { content })
+  } catch (error) {
+    console.error('patchComments 함수에서 오류 발생:', error)
+  }
+}
+
+// 댓글 삭제
+export async function deleteComments(commentId: string) {
+  try {
+    await instance.delete(`/comments/${commentId}`)
+  } catch (error) {
+    console.error('deleteComments 함수에서 오류 발생:', error)
   }
 }
