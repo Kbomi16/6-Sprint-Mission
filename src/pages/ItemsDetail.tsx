@@ -34,6 +34,7 @@ type CommentData = {
   content: string
   createdAt: string
   writer: {
+    id: number
     image: string
     nickname: string
   }
@@ -44,6 +45,8 @@ function ItemsDetail() {
   const [item, setItem] = useState<ItemData | null>(null)
   const [content, setContent] = useState('')
   const [comments, setComments] = useState<CommentData | null>(null)
+  const [myId, setMyId] = useState()
+  const [isOptionBoxVisible, setIsOptionBoxVisible] = useState(false)
 
   const fetchProductDetail = async () => {
     try {
@@ -69,6 +72,7 @@ function ItemsDetail() {
     try {
       const data = await getUsersMe()
       console.log(data)
+      setMyId(data.id)
     } catch (error) {
       console.error('사용자 id 가져오기 실패', error)
     }
@@ -77,6 +81,7 @@ function ItemsDetail() {
   useEffect(() => {
     fetchProductDetail()
     fetchProductComments()
+    fetchMyId()
   }, [id])
 
   if (!item || !comments) {
@@ -104,6 +109,14 @@ function ItemsDetail() {
       console.error('댓글 등록 실패', error)
     }
   }
+
+  const handleOptionClick = () => {
+    setIsOptionBoxVisible((prev) => !prev)
+  }
+
+  const handleEditComment = () => {}
+
+  const handleDeleteComment = () => {}
 
   return (
     <div className="container mx-auto my-32 flex max-w-[1200px] flex-col items-stretch justify-center px-8">
@@ -166,12 +179,29 @@ function ItemsDetail() {
         <div className="flex flex-col gap-4">
           {comments.map((comment, index) => (
             <div key={index}>
-              <div className="mb-4 flex items-center justify-between">
+              <div className="relative mb-4 flex items-center justify-between">
                 <p>{comment.content}</p>
                 <img
                   src={icon_optionbar}
                   className="h-6 w-6 cursor-pointer"
+                  onClick={handleOptionClick}
                 ></img>
+                {isOptionBoxVisible && myId === comment.writer.id && (
+                  <div className="absolute right-0 top-5 z-50 flex flex-col gap-1 rounded-xl bg-white shadow-md">
+                    <div
+                      onClick={handleEditComment}
+                      className="w-full cursor-pointer rounded-t-xl px-4 py-2 hover:bg-gray-100"
+                    >
+                      수정
+                    </div>
+                    <div
+                      onClick={handleDeleteComment}
+                      className="w-full cursor-pointer rounded-b-xl px-4 py-2 hover:bg-gray-100"
+                    >
+                      삭제
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="mb-4 flex items-center gap-4">
                 <img
