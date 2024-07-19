@@ -31,7 +31,7 @@ function BestProductList({ products }: ProductsProps) {
           />
           <div className="text-sm">{product.name}</div>
           <div className="text-lg font-bold">
-            {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원
           </div>
           <div className="flex items-center gap-1">
             <img src={icon_favorite} className="h-4 w-4 cursor-pointer" />
